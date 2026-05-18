@@ -56,10 +56,11 @@ export function Footer() {
             </h3>
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-3 text-background/80">
-                <MapPin className="w-5 h-5 shrink-0 text-gold mt-0.5" />
+                <MapPin className="w-5 h-5 shrink-0 text-gold mt-1" />
                 <span className="text-sm font-body leading-relaxed">
-                  123 Luxury Avenue,<br />
-                  Diamond District, NY 10036
+                  Kanksa Hat Tala,<br />
+                  Panagarh, Debipur,<br />
+                  West Bengal 713148
                 </span>
               </div>
               <div className="flex items-center gap-3 text-background/80">

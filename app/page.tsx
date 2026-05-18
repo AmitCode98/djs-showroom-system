@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/footer";
 
 import { HeroSection } from "@/components/home/hero-section";
 import FeaturedProducts from "@/components/home/featured-products";
-import CollectionsSection from "@/components/home/collections-section";
+import { CollectionsSection } from "@/components/collections/collections-section";
 
 export default function HomePage() {
   return (

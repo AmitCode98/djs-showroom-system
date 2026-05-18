@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { Heading, Paragraph, Caption } from "@/components/ui/typography"
 import { cn } from "@/lib/utils"
 
-const sectionTitleVariants = cva("flex flex-col gap-4", {
+const sectionTitleVariants = cva("flex flex-col", {
   variants: {
     align: {
       left: "text-left items-start",
@@ -45,11 +45,11 @@ const SectionTitle = React.forwardRef<HTMLDivElement, SectionTitleProps>(
     return (
       <div
         ref={ref}
-        className={cn(sectionTitleVariants({ align }), className)}
+        className={cn("flex flex-col gap-3", sectionTitleVariants({ align }), className)}
         {...props}
       >
         {subtitle && (
-          <Caption className="text-gold tracking-widest font-medium">
+          <Caption className="text-gold tracking-[0.2em] font-medium uppercase text-xs">
             {subtitle}
           </Caption>
         )}
@@ -59,7 +59,7 @@ const SectionTitle = React.forwardRef<HTMLDivElement, SectionTitleProps>(
         </Heading>
 
         {description && (
-          <Paragraph className="max-w-2xl text-muted-foreground mt-2">
+          <Paragraph className="max-w-2xl text-foreground/60 mt-1.5 text-[15px] leading-relaxed">
             {description}
           </Paragraph>
         )}
