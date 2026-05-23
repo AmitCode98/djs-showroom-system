@@ -6,24 +6,24 @@ import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-xl font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 font-body uppercase tracking-wider",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-xl font-semibold transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 font-body uppercase tracking-wider active:scale-[0.98]",
   {
     variants: {
       variant: {
         primary:
-          "bg-primary text-primary-foreground hover:bg-primary/90",
+          "bg-primary text-primary-foreground hover:bg-primary/95 shadow-[0_2px_8px_rgba(0,0,0,0.04)]",
 
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/90",
 
         outline:
-          "border border-border bg-transparent hover:bg-accent hover:text-accent-foreground",
+          "border border-[#EAD7B7]/60 bg-transparent hover:bg-[#F3E2C2]/20 hover:text-foreground",
 
         ghost:
-          "hover:bg-accent hover:text-accent-foreground",
+          "hover:bg-[#F3E2C2]/20 hover:text-foreground",
 
         gold:
-          "bg-gold text-white shadow-sm shadow-gold/20 hover:brightness-110 hover:-translate-y-0.5",
+          "bg-[#D4AF37] text-white shadow-[0_4px_12px_rgba(212,175,55,0.12)] hover:bg-[#C29D2C]",
       },
 
       size: {

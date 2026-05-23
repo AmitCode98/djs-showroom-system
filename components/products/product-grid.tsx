@@ -28,7 +28,7 @@ export default function ProductGrid() {
             <ProductCard
               key={product.id}
               title={product.title}
-              collection={product.collection}
+              category={product.collection}
               price={product.price}
             />
           ))}

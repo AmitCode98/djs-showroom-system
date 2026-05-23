@@ -4,10 +4,10 @@ import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa6
 
 import { cn } from "@/lib/utils"
 import { Container } from "@/components/ui/container"
+import { SHOWROOM_MESSAGING } from "@/constants/translations"
 
 const PHONE = "+91 70744 62770"
 const EMAIL = "duttajewellers@gmail.com"
-const SHIPPING_TEXT = "FREE SHIPPING on orders above ₹1,499"
 
 const socialLinks = [
   { icon: FaWhatsapp,  href: "#", label: "WhatsApp" },
@@ -40,10 +40,10 @@ export function ContactStrip() {
           </a>
         </div>
 
-        {/* CENTER — Shipping notice (desktop only, optically centered) */}
+        {/* CENTER — Showroom Consultation (desktop only, optically centered) */}
         <div className="hidden md:flex justify-center -translate-x-2 lg:-translate-x-4">
-          <p className="font-body text-[11px] tracking-[0.12em] font-semibold uppercase text-primary-foreground whitespace-nowrap">
-            {SHIPPING_TEXT}
+          <p className="font-bengali text-[13px] tracking-wide font-medium text-primary-foreground whitespace-nowrap">
+            {SHOWROOM_MESSAGING.contactStrip.bn}
           </p>
         </div>
 

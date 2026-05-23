@@ -6,12 +6,12 @@ import { COLLECTIONS } from "@/constants/collections"
 
 export function CollectionsSection() {
   return (
-    <section className="py-24 md:py-36 bg-background overflow-hidden">
+    <section className="pt-16 pb-10 md:pt-24 md:pb-12 bg-background overflow-hidden">
       <Container>
         <SectionTitle
-          title="Our Collection"
+          title="Shop Jewellery By Category"
           subtitle="Curated pieces of timeless elegance"
-          description="Discover timeless pieces crafted for modern elegance."
+          description="Explore handcrafted collections designed for every occasion and style."
           align="center"
           className="mb-12 md:mb-16"
         />

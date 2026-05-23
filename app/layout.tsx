@@ -34,7 +34,7 @@
 
 
 import type { Metadata } from "next";
-import { Inter, Cormorant_Garamond } from "next/font/google";
+import { Inter, Cormorant_Garamond, Hind_Siliguri } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -45,6 +45,12 @@ const inter = Inter({
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-cormorant",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali"],
+  variable: "--font-hind-siliguri",
   weight: ["300", "400", "500", "600", "700"],
 });
 
@@ -61,7 +67,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${cormorant.variable}`}
+      className={`${inter.variable} ${cormorant.variable} ${hindSiliguri.variable}`}
     >
       <body suppressHydrationWarning>{children}</body>
     </html>

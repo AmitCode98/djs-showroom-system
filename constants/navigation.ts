@@ -14,8 +14,7 @@ export interface NavGroup {
 
 export const NAV_LINKS: NavLink[] = [
   { name: "Home", href: "/" },
-  { name: "Collections", href: "/collections" },
-  { name: "Jewellery", href: "/products" },
+  { name: "Categories", href: "/categories" },
   { name: "Bestsellers", href: "/bestsellers" },
   { name: "New Arrivals", href: "/new-arrivals" },
   { name: "Track Order", href: "/track-order" },

@@ -41,9 +41,9 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-60 w-full transition-all duration-500 ease-out border-b",
+        "sticky top-0 z-60 w-full transition-all duration-200 ease-out border-b",
         isScrolled
-          ? "bg-[#F8F5F0]/95 backdrop-blur-md border-[#3C2814]/6 shadow-[0_10px_30px_-15px_rgba(60,40,20,0.08)] py-3"
+          ? "bg-[#F8F5F0]/95 backdrop-blur-md border-[#3C2814]/6 shadow-[0_4px_20px_-10px_rgba(60,40,20,0.06)] py-3"
           : "bg-[#F8F5F0] border-[#3C2814]/4 py-4 md:py-5"
       )}
     >
@@ -94,7 +94,7 @@ export function Navbar() {
         <nav className="hidden lg:flex items-center gap-5 xl:gap-7 absolute left-1/2 -translate-x-1/2 h-full">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href
-            const isCollections = link.name === "Collections"
+            const isCategories = link.name === "Categories"
 
             return (
               <div key={link.name} className="relative group flex items-center h-full">
@@ -114,7 +114,7 @@ export function Navbar() {
                 </Link>
 
                 {/* MEGA MENU DROPDOWN */}
-                {isCollections && (
+                {isCategories && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[750px] xl:w-[850px] bg-[#F8F5F0] border border-[#3C2814]/6 shadow-[0_20px_60px_-15px_rgba(60,40,20,0.12)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out translate-y-3 group-hover:translate-y-0 p-10 grid grid-cols-12 gap-8 xl:gap-16 cursor-default z-50 rounded-b-2xl before:absolute before:-top-6 before:left-0 before:w-full before:h-6">
                     
                     {/* LEFT COLUMN: Collections List */}
@@ -198,7 +198,7 @@ export function Navbar() {
         )}
       >
         {/* Spacer matching navbar height */}
-        <div className="h-[72px] shrink-0" />
+        <div className="h-[74px] shrink-0" />
 
         {/* Divider */}
         <div className="border-t border-border/20 mx-6" />
@@ -207,7 +207,7 @@ export function Navbar() {
         <nav className="flex flex-col items-center text-center pt-14 pb-6 gap-4 overflow-y-auto">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href
-            const isCollections = link.name === "Collections"
+            const isCategories = link.name === "Categories"
 
             return (
               <React.Fragment key={link.name}>
@@ -223,7 +223,7 @@ export function Navbar() {
                 </Link>
 
                 {/* Sub-menu rendering for Mobile collections directly inline */}
-                {isCollections && (
+                {isCategories && (
                   <div className="flex flex-col gap-6 mt-4 mb-6 items-center w-full">
                     
                     <div className="flex flex-col items-center gap-3">
