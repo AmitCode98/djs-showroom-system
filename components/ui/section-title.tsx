@@ -1,14 +1,14 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Heading, Paragraph, Caption } from "@/components/ui/typography"
+import { Sparkle } from "@phosphor-icons/react/dist/ssr"
 import { cn } from "@/lib/utils"
 
-const sectionTitleVariants = cva("flex flex-col", {
+const sectionTitleVariants = cva("flex flex-col max-w-2xl mx-auto", {
   variants: {
     align: {
       left: "text-left items-start",
-      center: "text-center items-center mx-auto",
-      right: "text-right items-end ml-auto",
+      center: "text-center items-center",
+      right: "text-right items-end",
     },
   },
   defaultVariants: {
@@ -21,7 +21,7 @@ export interface SectionTitleProps
     VariantProps<typeof sectionTitleVariants> {
   /** Primary heading of the section */
   title: React.ReactNode
-  /** Smaller uppercase text appearing above the title */
+  /** Smaller uppercase text appearing above the title inside a pill badge */
   subtitle?: React.ReactNode
   /** Descriptive body text appearing below the title */
   description?: React.ReactNode
@@ -33,7 +33,7 @@ const SectionTitle = React.forwardRef<HTMLDivElement, SectionTitleProps>(
   (
     {
       className,
-      align,
+      align = "center",
       title,
       subtitle,
       description,
@@ -42,26 +42,36 @@ const SectionTitle = React.forwardRef<HTMLDivElement, SectionTitleProps>(
     },
     ref
   ) => {
+    const HeadingTag = `h${titleLevel}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col gap-3", sectionTitleVariants({ align }), className)}
+        className={cn(
+          sectionTitleVariants({ align }),
+          "mb-12 md:mb-16",
+          className
+        )}
         {...props}
       >
+        {/* Luxury Architectural Badge */}
         {subtitle && (
-          <Caption className="text-gold tracking-[0.2em] font-medium uppercase text-xs">
-            {subtitle}
-          </Caption>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-[#F3EAD3]/50 border border-[#EAD7B7] text-[11px] font-body uppercase tracking-[0.2em] text-[#7A1C1C] mb-4">
+            <Sparkle weight="light" className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <span>{subtitle}</span>
+          </div>
         )}
-        
-        <Heading level={titleLevel} className="max-w-3xl">
-          {title}
-        </Heading>
 
+        {/* Heading in Fraunces font-light text-[#2B1D0E] */}
+        <HeadingTag className="font-heading text-3xl sm:text-4xl md:text-5xl font-light text-[#2B1D0E] tracking-tight mb-3 leading-tight">
+          {title}
+        </HeadingTag>
+
+        {/* Description in Albert Sans text-[#7B6A58] */}
         {description && (
-          <Paragraph className="max-w-2xl text-foreground/60 mt-1.5 text-[15px] leading-relaxed">
+          <p className="font-body text-sm sm:text-base text-[#7B6A58] leading-relaxed max-w-xl mx-auto">
             {description}
-          </Paragraph>
+          </p>
         )}
       </div>
     )

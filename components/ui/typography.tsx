@@ -9,21 +9,21 @@ const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
   ({ className, level = 2, ...props }, ref) => {
     const Component = `h${level}` as const
     
-    // Luxury typography scales gracefully across screen sizes
+    // Luxury typography scales gracefully across screen sizes matching Elegance For Every Generation
     const sizeClasses = {
-      1: "text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight",
-      2: "text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight",
-      3: "text-2xl sm:text-3xl md:text-4xl font-medium",
-      4: "text-xl sm:text-2xl md:text-3xl font-medium",
-      5: "text-lg sm:text-xl md:text-2xl font-medium",
-      6: "text-base sm:text-lg md:text-xl font-medium",
+      1: "text-4xl sm:text-5xl md:text-6xl font-light tracking-tight leading-tight",
+      2: "text-3xl sm:text-4xl md:text-5xl font-light tracking-tight leading-tight",
+      3: "text-2xl sm:text-3xl md:text-4xl font-light tracking-tight leading-snug",
+      4: "text-xl sm:text-2xl md:text-3xl font-light tracking-tight",
+      5: "text-lg sm:text-xl md:text-2xl font-light tracking-normal",
+      6: "text-base sm:text-lg md:text-xl font-normal tracking-normal",
     }
 
     return (
       <Component
         ref={ref}
         className={cn(
-          "font-heading text-foreground",
+          "font-heading text-[#2B1D0E]",
           sizeClasses[level],
           className
         )}
@@ -42,11 +42,9 @@ const SubHeading = React.forwardRef<HTMLHeadingElement, SubHeadingProps>(
   ({ className, as: Component = "h3", ...props }, ref) => {
     return (
       <Component
-        // The ref type varies per element tag; casting to the HTMLHeadingElement
-        // ref is safe here since all valid `as` values share the same DOM interface.
         ref={ref as React.Ref<HTMLHeadingElement>}
         className={cn(
-          "font-heading text-xl sm:text-2xl text-muted-foreground font-normal tracking-wide",
+          "font-body text-sm sm:text-base text-[#7A1C1C] font-medium tracking-wide",
           className
         )}
         {...props}
@@ -63,7 +61,7 @@ const Paragraph = React.forwardRef<
   <p
     ref={ref}
     className={cn(
-      "font-body text-base sm:text-lg leading-relaxed text-foreground/80",
+      "font-body text-sm sm:text-base leading-relaxed text-[#7B6A58]",
       className
     )}
     {...props}
@@ -78,7 +76,7 @@ const Caption = React.forwardRef<
   <span
     ref={ref}
     className={cn(
-      "font-body text-sm text-muted-foreground uppercase tracking-wider",
+      "inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3EAD3]/50 border border-[#EAD7B7] text-[11px] font-body uppercase tracking-[0.2em] text-[#7A1C1C]",
       className
     )}
     {...props}

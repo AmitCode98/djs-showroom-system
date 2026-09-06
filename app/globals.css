@@ -60,9 +60,9 @@
      FONTS
   ========================== */
 
-  --font-heading: var(--font-cormorant);
-  --font-body: var(--font-inter);
-  --font-bengali: var(--font-hind-siliguri);
+  --font-heading: var(--font-fraunces), serif;
+  --font-body: var(--font-albert-sans), sans-serif;
+  --font-bengali: var(--font-hind-siliguri), sans-serif;
 
   /* =========================
      COLORS
@@ -191,6 +191,18 @@
 ========================================================= */
 
 @layer utilities {
+  .font-heading {
+    font-family: var(--font-fraunces), Georgia, serif !important;
+  }
+
+  .font-body {
+    font-family: var(--font-albert-sans), system-ui, -apple-system, sans-serif !important;
+  }
+
+  .font-bengali {
+    font-family: var(--font-hind-siliguri), sans-serif !important;
+  }
+
   .container-wrapper {
     width: 100%;
     max-width: 1440px;

@@ -18,14 +18,14 @@ export default function FeaturedProducts() {
         />
 
         {/* Product grid of real featured products */}
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map((product) => (
             <ProductCard
               key={product.id}
               title={product.name}
-              category={product.collection}
+              category={product.category}
               price={product.price}
-              image={product.primaryImage.url}
+              image={product.images.main.url}
               href={`/products/${product.slug}`}
             />
           ))}

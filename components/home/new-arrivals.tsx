@@ -14,7 +14,6 @@ export function NewArrivalsSection() {
           subtitle="New Season Essentials"
           description="Discover the latest handcrafted jewellery pieces curated for timeless elegance."
           align="center"
-          className="mb-16 md:mb-20"
         />
 
         {/*
@@ -30,11 +29,11 @@ export function NewArrivalsSection() {
               className="w-[80vw] sm:w-[60vw] shrink-0 snap-center md:w-auto md:shrink"
             >
               <ProductCard
-                title={product.title}
+                title={product.name}
                 category={product.category}
                 price={product.price}
-                image={product.image}
-                href={product.href}
+                image={product.images.main.url}
+                href={`/products/${product.slug}`}
               />
             </div>
           ))}
@@ -47,11 +46,11 @@ export function NewArrivalsSection() {
             className={[
               "inline-flex items-center justify-center",
               "h-12 px-10",
-              "rounded-xl border border-border bg-transparent",
-              "font-body font-medium uppercase tracking-wider text-sm text-foreground",
-              "transition-all duration-300 ease-out",
-              "hover:bg-gold hover:border-gold hover:text-white",
-              "active:scale-[0.98]",
+              "rounded-none border border-[#2B1D0E] bg-white/80",
+              "font-body font-medium uppercase tracking-[0.16em] text-xs text-[#2B1D0E]",
+              "transition-all duration-200 ease-out",
+              "hover:bg-[#7A1C1C] hover:border-[#7A1C1C] hover:text-white",
+              "active:scale-[0.96] shadow-xs",
             ].join(" ")}
           >
             Discover More

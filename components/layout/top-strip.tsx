@@ -1,5 +1,5 @@
 import * as React from "react"
-import { SHOWROOM_MESSAGING } from "@/constants/translations"
+import { MARQUEE_MESSAGES_BN } from "@/constants/marquee"
 
 const Bullet = () => (
   <span className="px-14 md:px-24 text-gold/30 select-none flex items-center justify-center text-[10px] transform-gpu">✦</span>
@@ -7,7 +7,7 @@ const Bullet = () => (
 
 const AnnouncementBlock = () => (
   <>
-    {SHOWROOM_MESSAGING.marquee.map((phrase, idx) => (
+    {MARQUEE_MESSAGES_BN.map((phrase, idx) => (
       <React.Fragment key={idx}>
         <span>{phrase}</span>
         <Bullet />

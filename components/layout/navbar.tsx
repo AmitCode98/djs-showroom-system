@@ -3,17 +3,43 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, ShoppingBag, Search, User, Heart } from "lucide-react"
+import { List, X, Sparkle, MagnifyingGlass, CaretDown, ArrowRight } from "@phosphor-icons/react"
 
 import { cn } from "@/lib/utils"
 import { Container } from "@/components/ui/container"
 import { NAV_LINKS } from "@/constants/navigation"
-import { COLLECTIONS, BUDGETS } from "@/constants/collections"
+import { CATEGORIES } from "@/constants/categories"
+import { BUDGET_RANGES } from "@/constants/budget-ranges"
+import { useShowroomTray } from "@/context/showroom-tray-context"
 
 export function Navbar() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
+  const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
+  const { totalItemsCount, toggleTray } = useShowroomTray()
+
+  const categoriesRef = React.useRef<HTMLDivElement>(null)
+
+  // Secret staff trigger: triple-tap logo to open tablet config modal
+  const logoClickCountRef = React.useRef(0)
+  const logoClickTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+
+  const handleLogoTap = (e: React.MouseEvent) => {
+    logoClickCountRef.current += 1
+    if (logoClickTimeoutRef.current) clearTimeout(logoClickTimeoutRef.current)
+
+    if (logoClickCountRef.current >= 3) {
+      e.preventDefault()
+      window.dispatchEvent(new CustomEvent("djs:open-tablet-config"))
+      logoClickCountRef.current = 0
+      return
+    }
+
+    logoClickTimeoutRef.current = setTimeout(() => {
+      logoClickCountRef.current = 0
+    }, 600)
+  }
 
   // Handle transparent to solid transition on scroll
   React.useEffect(() => {
@@ -24,243 +50,291 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Prevent background scrolling when mobile menu is open
+  // Close categories menu on outside click
   React.useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = "unset"
+    const handleClickOutside = (event: MouseEvent) => {
+      if (categoriesRef.current && !categoriesRef.current.contains(event.target as Node)) {
+        setIsCategoriesMenuOpen(false)
+      }
     }
-    
-    // Cleanup on unmount
-    return () => {
-      document.body.style.overflow = "unset"
-    }
-  }, [isMobileMenuOpen])
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  // Close menus on route change
+  React.useEffect(() => {
+    setIsMobileMenuOpen(false)
+    setIsCategoriesMenuOpen(false)
+  }, [pathname])
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-60 w-full transition-all duration-200 ease-out border-b",
+        "sticky top-0 z-50 w-full transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]",
         isScrolled
-          ? "bg-[#F8F5F0]/95 backdrop-blur-md border-[#3C2814]/6 shadow-[0_4px_20px_-10px_rgba(60,40,20,0.06)] py-3"
-          : "bg-[#F8F5F0] border-[#3C2814]/4 py-4 md:py-5"
+          ? "bg-[#FDFAF5]/95 backdrop-blur-md shadow-[0_4px_24px_rgba(43,29,14,0.06)] border-b border-[#EAD7B7]/80 py-2.5"
+          : "bg-[#FDFAF5] border-b border-[#EAD7B7]/40 py-3.5"
       )}
     >
       <Container className="flex items-center justify-between relative">
-        
-        {/* MOBILE: Left (Hamburger / Close) — always above overlay */}
-        <div className="flex lg:hidden flex-1 justify-start relative z-60">
+        {/* LEFT: Mobile / Tablet Menu Button (48px Touch Target) */}
+        <div className="flex items-center lg:hidden">
           <button
-            className="p-1 -ml-2 focus:outline-none relative w-10 h-10 flex items-center justify-center group"
+            type="button"
+            className="w-12 h-12 rounded-none flex items-center justify-center text-foreground hover:text-[#7A1C1C] active:scale-[0.96] transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle Menu"
+            aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
+            aria-expanded={isMobileMenuOpen}
           >
-            <Menu 
-              className={cn(
-                "absolute transition-all duration-500 group-hover:text-gold",
-                isMobileMenuOpen
-                  ? "opacity-0 rotate-90 scale-50 text-foreground"
-                  : "opacity-100 rotate-0 scale-100 text-foreground"
-              )} 
-              strokeWidth={1.5} 
-              size={28}
-            />
-            <X 
-              className={cn(
-                "absolute transition-all duration-500 text-foreground group-hover:text-gold",
-                isMobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-50"
-              )} 
-              strokeWidth={2} 
-              size={26}
-            />
+            {isMobileMenuOpen ? (
+              <X weight="light" className="w-6 h-6" />
+            ) : (
+              <List weight="light" className="w-6 h-6" />
+            )}
           </button>
         </div>
 
-        {/* LOGO: Center on Mobile, Left on Desktop */}
-        <div className="flex justify-center lg:justify-start shrink-0 z-50">
-          <Link 
-            href="/" 
-            className="flex items-center gap-2 relative group"
-            onClick={() => setIsMobileMenuOpen(false)}
+        {/* LEFT / LOGO: Brand Heritage Mark */}
+        <div className="flex items-center">
+          <Link
+            href="/"
+            onClick={handleLogoTap}
+            className="group flex flex-col focus-visible:outline-none select-none py-1"
+            aria-label="DJS Showroom Home"
           >
-            <span className="font-heading text-[22px] lg:text-[28px] font-bold tracking-[0.15em] uppercase text-foreground transition-colors duration-300 group-hover:text-gold/90">
+            <span className="font-heading text-2xl sm:text-3xl font-light tracking-[0.22em] text-[#2B1D0E] uppercase transition-colors group-hover:text-[#7A1C1C]">
               DJS<span className="text-gold">.</span>
             </span>
           </Link>
         </div>
 
-        {/* CENTER: Desktop Navigation (Single Line) */}
-        <nav className="hidden lg:flex items-center gap-5 xl:gap-7 absolute left-1/2 -translate-x-1/2 h-full">
+        {/* CENTER: Desktop Navigation (Single Line with Tap Mega-Menu) */}
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2 h-full">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href
-            const isCategories = link.name === "Categories"
+            const isCategories = link.dropdown
 
-            return (
-              <div key={link.name} className="relative group flex items-center h-full">
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "text-[11px] xl:text-xs font-body uppercase tracking-[0.08em] font-semibold transition-colors duration-300 relative whitespace-nowrap hover:text-gold py-2",
-                    isActive ? "text-gold" : "text-foreground/90"
-                  )}
-                >
-                  {link.name}
-                  {/* Premium animated underline effect */}
-                  <span className={cn(
-                    "absolute bottom-0 left-0 h-px bg-gold transition-all duration-300",
-                    isActive ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
-                  )} />
-                </Link>
+            if (isCategories) {
+              return (
+                <div key={link.label} ref={categoriesRef} className="relative flex items-center h-full">
+                  <button
+                    type="button"
+                    onClick={() => setIsCategoriesMenuOpen((prev) => !prev)}
+                    className={cn(
+                      "text-xs font-body uppercase tracking-[0.14em] font-medium transition-colors duration-200 relative whitespace-nowrap py-2 flex items-center gap-1.5 min-h-[48px]",
+                      isActive || isCategoriesMenuOpen ? "text-[#7A1C1C] font-semibold" : "text-foreground/90 hover:text-[#7A1C1C]"
+                    )}
+                    aria-expanded={isCategoriesMenuOpen}
+                    aria-label="Toggle Categories Menu"
+                  >
+                    <span>{link.label}</span>
+                    <CaretDown
+                      weight="light"
+                      className={cn(
+                        "w-3.5 h-3.5 transition-transform duration-200",
+                        isCategoriesMenuOpen && "rotate-180 text-[#7A1C1C]"
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "absolute bottom-1 left-0 h-[2px] bg-[#7A1C1C] transition-all duration-200",
+                        isActive || isCategoriesMenuOpen ? "w-full opacity-100" : "w-0 opacity-0"
+                      )}
+                    />
+                  </button>
 
-                {/* MEGA MENU DROPDOWN */}
-                {isCategories && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[750px] xl:w-[850px] bg-[#F8F5F0] border border-[#3C2814]/6 shadow-[0_20px_60px_-15px_rgba(60,40,20,0.12)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out translate-y-3 group-hover:translate-y-0 p-10 grid grid-cols-12 gap-8 xl:gap-16 cursor-default z-50 rounded-b-2xl before:absolute before:-top-6 before:left-0 before:w-full before:h-6">
-                    
-                    {/* LEFT COLUMN: Collections List */}
+                  {/* MEGA MENU: Tap-friendly Popover for Tablets & Desktops */}
+                  <div
+                    className={cn(
+                      "absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[760px] xl:w-[860px] bg-[#FDFAF5] border border-[#EAD7B7] shadow-[0_24px_60px_-15px_rgba(60,40,20,0.18)] p-8 grid grid-cols-12 gap-8 z-50 rounded-none transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]",
+                      isCategoriesMenuOpen
+                        ? "opacity-100 visible translate-y-0 pointer-events-auto"
+                        : "opacity-0 invisible -translate-y-2 pointer-events-none"
+                    )}
+                  >
+                    {/* LEFT COLUMN: Categories */}
                     <div className="col-span-8 flex flex-col gap-2">
-                      <p className="font-heading text-sm font-semibold tracking-widest text-foreground uppercase mb-6">Shop By Category</p>
-                      <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-                        {COLLECTIONS.map(collection => (
-                          <Link 
-                            key={collection.id} 
-                            href={collection.href}
-                            className="font-body text-[13px] text-foreground/70 hover:text-gold transition-colors duration-300"
-                          >
-                            {collection.title}
-                          </Link>
-                        ))}
+                      <div className="flex items-center justify-between mb-4 border-b border-[#EAD7B7]/60 pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <p className="font-heading text-xl font-normal tracking-wide text-[#2B1D0E] uppercase">
+                            Browse By Category
+                          </p>
+                          <span className="text-[10px] font-body uppercase tracking-wider text-muted-foreground px-2 py-0.5 rounded-none bg-[#EAD7B7]/30">
+                            {CATEGORIES.length} Collections
+                          </span>
+                        </div>
+                        <Link
+                          href="/categories"
+                          className="text-xs font-body text-[#7A1C1C] hover:underline uppercase tracking-wider font-semibold flex items-center gap-1.5"
+                          onClick={() => setIsCategoriesMenuOpen(false)}
+                        >
+                          <span>View All</span>
+                          <ArrowRight weight="light" className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 max-h-[320px] overflow-y-auto px-1 pr-3 scrollbar-thin scrollbar-thumb-[#EAD7B7]/80 scrollbar-track-transparent">
+                        {CATEGORIES.map((category) => {
+                          const isSpecial = category.slug === "mens-collection" || category.slug === "kids-collection"
+                          return (
+                            <Link 
+                              key={category.id} 
+                              href={category.href}
+                              className={cn(
+                                "font-body text-sm px-3.5 py-2.5 rounded-none transition-all flex items-center justify-between active:scale-[0.98]",
+                                isSpecial
+                                    ? "text-[#7A1C1C] font-semibold bg-[#F3EAD3]/60 hover:bg-[#F3EAD3] border border-[#D4AF37]/30"
+                                  : "text-foreground/80 hover:text-[#7A1C1C] hover:bg-[#7A1C1C]/5"
+                              )}
+                              onClick={() => setIsCategoriesMenuOpen(false)}
+                            >
+                              <div className="flex items-center gap-2">
+                                <span>{category.title}</span>
+                                {isSpecial && (
+                                  <span className="text-[9px] px-1.5 py-0.5 rounded-none bg-[#D4AF37] text-[#2B1D0E] font-bold uppercase tracking-wider">
+                                    New
+                                  </span>
+                                )}
+                              </div>
+                              <ArrowRight weight="light" className="w-3.5 h-3.5 text-gold/60" />
+                            </Link>
+                          )
+                        })}
                       </div>
                     </div>
 
-                    {/* RIGHT COLUMN: Budget List */}
-                    <div className="col-span-4 flex flex-col gap-2">
-                      <p className="font-heading text-sm font-semibold tracking-widest text-foreground uppercase mb-6">Shop By Budget</p>
-                      <div className="flex flex-col gap-4">
-                        {BUDGETS.map(budget => (
+                    {/* RIGHT COLUMN: Budget Tiers */}
+                    <div className="col-span-4 flex flex-col gap-2 border-l border-[#EAD7B7]/60 pl-6">
+                      <div className="flex items-center justify-between mb-4 border-b border-[#EAD7B7]/60 pb-2.5">
+                        <p className="font-heading text-xl font-normal tracking-wide text-[#2B1D0E] uppercase">
+                          Shop By Budget
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        {BUDGET_RANGES.map((budget) => (
                           <Link 
                             key={budget.id} 
                             href={budget.href}
-                            className="font-body text-[13px] text-foreground/70 hover:text-gold transition-colors duration-300"
+                            className="font-body text-sm text-foreground/85 hover:text-[#7A1C1C] hover:bg-[#7A1C1C]/5 px-3.5 py-2.5 rounded-none transition-colors flex items-center justify-between active:scale-[0.98] border border-transparent hover:border-[#EAD7B7]/40"
+                            onClick={() => setIsCategoriesMenuOpen(false)}
                           >
-                            {budget.title}
+                            <span className="font-medium">{budget.title}</span>
+                            <span className="text-[11px] text-muted-foreground font-light">{budget.description?.split(" ")[0]}</span>
                           </Link>
                         ))}
                       </div>
                     </div>
-
                   </div>
-                )}
+                </div>
+              )
+            }
+
+            return (
+              <div key={link.label} className="relative flex items-center h-full">
+                <Link
+                  href={link.href}
+                  className={cn(
+                    "text-xs font-body uppercase tracking-[0.14em] font-medium transition-colors duration-200 relative whitespace-nowrap hover:text-[#7A1C1C] py-2 min-h-[48px] flex items-center",
+                    isActive ? "text-[#7A1C1C] font-semibold" : "text-foreground/90"
+                  )}
+                >
+                  {link.label}
+                  <span className={cn(
+                    "absolute bottom-1 left-0 h-[2px] bg-[#7A1C1C] transition-all duration-200",
+                    isActive ? "w-full opacity-100" : "w-0 opacity-0 hover:w-full hover:opacity-100"
+                  )} />
+                </Link>
               </div>
             )
           })}
         </nav>
 
-        {/* RIGHT: Desktop Actions */}
-        <div className="hidden lg:flex items-center gap-6 shrink-0 justify-end">
-          <button className="text-foreground/70 hover:text-gold transition-colors duration-300" aria-label="Search">
-            <Search className="w-5 h-5" strokeWidth={1.5} />
-          </button>
-          <button className="text-foreground/70 hover:text-gold transition-colors duration-300" aria-label="Account">
-            <User className="w-5 h-5" strokeWidth={1.5} />
-          </button>
-          <button className="text-foreground/70 hover:text-gold transition-colors duration-300" aria-label="Wishlist">
-            <Heart className="w-5 h-5" strokeWidth={1.5} />
-          </button>
-          <button className="text-foreground/70 hover:text-gold transition-colors duration-300 relative group" aria-label="Cart">
-            <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
+        {/* RIGHT: Desktop Actions (48px Touch Targets) */}
+        <div className="hidden lg:flex items-center gap-2 shrink-0 justify-end">
+          <Link
+            href="/products"
+            className="w-12 h-12 rounded-none flex items-center justify-center text-foreground/75 hover:text-[#7A1C1C] hover:bg-[#7A1C1C]/5 active:scale-[0.96] transition-all"
+            aria-label="Search Catalogue"
+          >
+            <MagnifyingGlass weight="light" className="w-5 h-5" />
+          </Link>
+
+          {/* Showroom Viewing Tray */}
+          <button
+            onClick={toggleTray}
+            className={cn(
+              "w-12 h-12 rounded-none flex items-center justify-center transition-all duration-200 relative active:scale-[0.96]",
+              totalItemsCount > 0
+                ? "bg-[#7A1C1C] text-white shadow-md hover:bg-[#621616]"
+                : "text-foreground/80 hover:text-[#7A1C1C] hover:bg-[#7A1C1C]/5 border border-[#EAD7B7]/50 hover:border-[#7A1C1C]/40"
+            )}
+            aria-label={`Showroom Viewing Tray with ${totalItemsCount} pieces`}
+          >
+            <Sparkle weight="light" className="w-5 h-5" />
+            {totalItemsCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-[#D4AF37] text-[#2B1D0E] text-[10px] font-bold font-body rounded-none flex items-center justify-center shadow-xs">
+                {totalItemsCount}
+              </span>
+            )}
           </button>
         </div>
 
-        {/* RIGHT: Mobile Actions */}
-        <div className="flex lg:hidden items-center justify-end gap-4 flex-1">
-          <button className="text-foreground/80 hover:text-gold transition-colors duration-300" aria-label="Search">
-            <Search className="w-5 h-5" strokeWidth={1.25} />
-          </button>
-          <button className="text-foreground/80 hover:text-gold transition-colors duration-300" aria-label="Account">
-            <User className="w-5 h-5" strokeWidth={1.25} />
-          </button>
-          <button className="text-foreground/80 hover:text-gold transition-colors duration-300 relative group" aria-label="Cart">
-            <ShoppingBag className="w-5 h-5" strokeWidth={1.25} />
-            {/* Elegant Cart Badge Indicator */}
-            <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-gold rounded-full" />
+        {/* RIGHT: Mobile / Tablet Actions (48px Touch Targets) */}
+        <div className="flex lg:hidden items-center justify-end gap-1.5 flex-1">
+          <Link
+            href="/products"
+            className="w-12 h-12 rounded-none flex items-center justify-center text-foreground/80 hover:text-[#7A1C1C] active:scale-[0.96] transition-all"
+            aria-label="Search Catalogue"
+          >
+            <MagnifyingGlass weight="light" className="w-5 h-5" />
+          </Link>
+          <button
+            onClick={toggleTray}
+            className={cn(
+              "w-12 h-12 rounded-none flex items-center justify-center transition-all duration-200 relative active:scale-[0.96]",
+              totalItemsCount > 0
+                ? "bg-[#7A1C1C] text-white shadow-md"
+                : "text-foreground/80 hover:text-[#7A1C1C] border border-[#EAD7B7]/50 hover:border-[#7A1C1C]/40"
+            )}
+            aria-label={`Showroom Viewing Tray with ${totalItemsCount} pieces`}
+          >
+            <Sparkle weight="light" className="w-5 h-5" />
+            {totalItemsCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-[#D4AF37] text-[#2B1D0E] text-[10px] font-bold font-body rounded-none flex items-center justify-center shadow-xs">
+                {totalItemsCount}
+              </span>
+            )}
           </button>
         </div>
       </Container>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile / Tablet Menu Overlay */}
       <div
         className={cn(
-          "fixed inset-0 bg-[#F8F5F0] z-40 transition-all duration-500 ease-in-out lg:hidden flex flex-col",
+          "fixed inset-0 bg-[#FDFAF5] z-40 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] lg:hidden flex flex-col",
           isMobileMenuOpen
-            ? "opacity-100 translate-y-0"
+            ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 -translate-y-4 pointer-events-none"
         )}
       >
-        {/* Spacer matching navbar height */}
         <div className="h-[74px] shrink-0" />
+        <div className="border-t border-[#EAD7B7]/40 mx-6" />
 
-        {/* Divider */}
-        <div className="border-t border-border/20 mx-6" />
-
-        {/* Navigation links */}
-        <nav className="flex flex-col items-center text-center pt-14 pb-6 gap-4 overflow-y-auto">
+        <nav className="flex flex-col items-center text-center pt-8 pb-8 gap-4 overflow-y-auto px-6">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href
-            const isCategories = link.name === "Categories"
-
             return (
-              <React.Fragment key={link.name}>
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "text-lg font-heading tracking-widest uppercase transition-colors duration-300 hover:text-gold py-1",
-                    isActive ? "text-gold" : "text-foreground/90"
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-
-                {/* Sub-menu rendering for Mobile collections directly inline */}
-                {isCategories && (
-                  <div className="flex flex-col gap-6 mt-4 mb-6 items-center w-full">
-                    
-                    <div className="flex flex-col items-center gap-3">
-                      <p className="font-heading text-xs font-semibold tracking-widest text-foreground/50 uppercase mb-1">Shop By Category</p>
-                      {COLLECTIONS.map(col => (
-                        <Link
-                          key={col.id}
-                          href={col.href}
-                          className="text-sm font-body text-foreground/70 hover:text-gold transition-colors duration-300"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          {col.title}
-                        </Link>
-                      ))}
-                    </div>
-
-                    <div className="w-8 h-px bg-border/40" />
-
-                    <div className="flex flex-col items-center gap-3">
-                      <p className="font-heading text-xs font-semibold tracking-widest text-foreground/50 uppercase mb-1">Shop By Budget</p>
-                      {BUDGETS.map(budget => (
-                        <Link
-                          key={budget.id}
-                          href={budget.href}
-                          className="text-sm font-body text-foreground/70 hover:text-gold transition-colors duration-300"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          {budget.title}
-                        </Link>
-                      ))}
-                    </div>
-
-                    {/* Tiny divider to separate sub-menu from next main links */}
-                    <div className="w-8 h-px bg-border/40 mt-2" />
-                  </div>
+              <Link
+                key={link.label}
+                href={link.href}
+                className={cn(
+                  "font-heading text-2xl uppercase tracking-widest transition-colors duration-200 py-3 min-h-[48px] flex items-center justify-center active:scale-[0.96]",
+                  isActive ? "text-[#7A1C1C] font-normal" : "text-foreground/90 hover:text-[#7A1C1C]"
                 )}
-              </React.Fragment>
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
             )
           })}
         </nav>

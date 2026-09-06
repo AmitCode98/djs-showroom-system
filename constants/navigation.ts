@@ -1,10 +1,11 @@
 // ============================================================
-// NAVIGATION CONSTANTS
+// NAVIGATION CONSTANTS — In-Store Showroom Platform
 // ============================================================
 
 export interface NavLink {
-  name: string
+  label: string
   href: string
+  dropdown?: boolean
 }
 
 export interface NavGroup {
@@ -13,31 +14,33 @@ export interface NavGroup {
 }
 
 export const NAV_LINKS: NavLink[] = [
-  { name: "Home", href: "/" },
-  { name: "Categories", href: "/categories" },
-  { name: "Bestsellers", href: "/bestsellers" },
-  { name: "New Arrivals", href: "/new-arrivals" },
-  { name: "Track Order", href: "/track-order" },
-  { name: "About Us", href: "/about" },
+  { label: "Home", href: "/" },
+  { label: "Categories", href: "/categories", dropdown: true },
+  { label: "Men's", href: "/categories/mens-collection" },
+  { label: "Kid's", href: "/categories/kids-collection" },
+  { label: "All Jewellery", href: "/products" },
+  { label: "About Us", href: "/about" },
 ]
 
 export const FOOTER_NAV_GROUPS: NavGroup[] = [
   {
     label: "Collections",
     links: [
-      { name: "High Jewellery", href: "/high-jewellery" },
-      { name: "Bridal & Engagement", href: "/bridal" },
-      { name: "Fine Watches", href: "/fine-watches" },
-      { name: "The Heritage Collection", href: "/heritage" },
+      { label: "High Jewellery", href: "/categories/necklace" },
+      { label: "Bridal & Wedding", href: "/categories/sitahar" },
+      { label: "Traditional Bengali", href: "/categories/sankha-pola" },
+      { label: "Men's Collection", href: "/categories/mens-collection" },
+      { label: "Kid's Collection", href: "/categories/kids-collection" },
+      { label: "The Heritage Collection", href: "/categories/bangles" },
     ],
   },
   {
-    label: "Customer Care",
+    label: "Showroom & Trust",
     links: [
-      { name: "Book an Appointment", href: "/book-appointment" },
-      { name: "Jewellery Care Guide", href: "/care-guide" },
-      { name: "Shipping & Returns", href: "/shipping-returns" },
-      { name: "FAQ", href: "/faq" },
+      { label: "Today's Gold Rate", href: "/about#rates" },
+      { label: "BIS 916 Hallmark", href: "/about#hallmark" },
+      { label: "Artisan Heritage", href: "/about#heritage" },
+      { label: "Showroom Assistance", href: "/contact" },
     ],
   },
 ]
