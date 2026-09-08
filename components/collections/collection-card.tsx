@@ -23,12 +23,12 @@ export function CollectionCard({ title, bengaliTitle, image, href, className }: 
     <Link 
       href={href} 
       className={cn(
-        "group flex flex-col items-center gap-4 cursor-pointer p-3.5 rounded-none border border-[#785A28]/12 bg-white/35",
-        "transition-all duration-200 ease-out hover:translate-y-[-3px] active:scale-[0.98] shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(120,90,40,0.06)] hover:border-[#785A28]/25",
+        "group flex flex-col items-center cursor-pointer rounded-none border border-[#785A28]/15 bg-white/40 overflow-hidden",
+        "transition-all duration-200 ease-out hover:translate-y-[-3px] active:scale-[0.98] shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(120,90,40,0.06)] hover:border-[#785A28]/30",
         className
       )}
     >
-      {/* Image Container with precise aspect ratio and crisp architectural framing */}
+      {/* Image Container with flush edge-to-edge framing */}
       <div className="relative w-full aspect-4/5 rounded-none overflow-hidden bg-[#F8F5F0]">
         <CategoryImage
           src={image || null}
@@ -51,13 +51,13 @@ export function CollectionCard({ title, bengaliTitle, image, href, className }: 
         )}
       </div>
 
-      {/* Typography with premium spacing and elegant action link */}
-      <div className="flex flex-col items-center gap-1 relative w-full text-center">
-        <h3 className="font-heading text-lg lg:text-[19px] tracking-[0.03em] font-normal text-[#2B1D0E] transition-colors duration-200 ease-out group-hover:text-[#7A1C1C]">
+      {/* Typography with premium responsive spacing and elegant action link */}
+      <div className="flex flex-col items-center gap-1 sm:gap-1.5 relative w-full text-center p-3 sm:p-4 pb-4 sm:pb-5">
+        <h3 className="font-heading text-base sm:text-lg lg:text-[19px] tracking-[0.03em] font-normal text-[#2B1D0E] transition-colors duration-200 ease-out group-hover:text-[#7A1C1C]">
           {title}
         </h3>
         
-        <span className="font-body text-[11px] text-[#7A1C1C] font-semibold tracking-wider uppercase flex items-center gap-1 group-hover:translate-x-0.5 transition-transform duration-150">
+        <span className="font-body text-[10px] sm:text-[11px] text-[#7A1C1C] font-semibold tracking-wider uppercase flex items-center gap-1 group-hover:translate-x-0.5 transition-transform duration-150">
           <span>Explore</span>
           <ArrowRight weight="light" className="w-3 h-3 text-[#7A1C1C]" />
         </span>

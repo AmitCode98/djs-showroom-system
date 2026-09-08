@@ -18,7 +18,6 @@ export default function CategoriesPage() {
 
         {/* Header Section Matching Elegance For Every Generation */}
         <SectionTitle
-          subtitle="Curated Showroom Editions"
           title="Browse By Category"
           description="Handcrafted Bengali jewellery heritage. Select any collection to view available showroom pieces."
           align="center"
@@ -31,9 +30,9 @@ export default function CategoriesPage() {
             <Link 
               key={category.id} 
               href={category.href}
-              className="group flex flex-col items-center p-3 rounded-none bg-white/60 border border-[#EAD7B7]/60 shadow-2xs hover:shadow-md transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96]"
+              className="group flex flex-col items-center rounded-none bg-white/60 border border-[#EAD7B7]/70 shadow-2xs hover:shadow-md transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96] overflow-hidden"
             >
-              <div className="w-full aspect-4/5 relative overflow-hidden rounded-none bg-white shadow-xs mb-3 md:mb-4">
+              <div className="w-full aspect-4/5 relative overflow-hidden rounded-none bg-white">
                 <CategoryImage
                   src={category.image}
                   alt={category.title}
@@ -54,12 +53,14 @@ export default function CategoriesPage() {
               </div>
 
               {/* Text Content — Permanently Visible & Accessible */}
-              <h3 className="font-heading text-lg md:text-xl text-foreground font-medium tracking-wide group-hover:text-[#7A1C1C] transition-colors duration-200 text-center">
-                {category.title}
-              </h3>
-              <span className="font-body text-[11px] text-[#7A1C1C] font-semibold tracking-wider uppercase mt-1.5 flex items-center gap-1.5 group-hover:translate-x-0.5 transition-transform duration-150">
-                View Pieces <ArrowRight weight="light" className="w-3.5 h-3.5 text-[#7A1C1C]" />
-              </span>
+              <div className="p-4 pb-5 flex flex-col items-center text-center w-full">
+                <h3 className="font-heading text-lg md:text-xl text-foreground font-medium tracking-wide group-hover:text-[#7A1C1C] transition-colors duration-200">
+                  {category.title}
+                </h3>
+                <span className="font-body text-[11px] text-[#7A1C1C] font-semibold tracking-wider uppercase mt-1.5 flex items-center gap-1.5 group-hover:translate-x-0.5 transition-transform duration-150">
+                  View Pieces <ArrowRight weight="light" className="w-3.5 h-3.5 text-[#7A1C1C]" />
+                </span>
+              </div>
             </Link>
           ))}
         </div>

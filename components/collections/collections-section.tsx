@@ -10,25 +10,20 @@ export function CollectionsSection() {
       <Container>
         <SectionTitle
           title="Shop Jewellery By Category"
-          subtitle="Curated Heritage Collections"
-          description="Explore handcrafted collections designed for every occasion, wedding ritual, and festive celebration."
+          description="Explore handcrafted collections designed for weddings, traditional rituals, and daily celebrations."
           align="center"
         />
         
-        {/* Mobile: Snap Scroll Slider | Desktop: Grid */}
-        <div className="flex overflow-x-auto snap-x snap-mandatory pt-4 pb-12 -mx-4 px-4 sm:-mx-6 sm:px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 lg:gap-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
+        {/* Responsive Grid: 2 cols mobile, 3 cols tablet, 4 cols desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 md:gap-6 lg:gap-7">
           {CATEGORIES.map((category) => (
-            <div 
-              key={category.id} 
-              className="w-[80vw] sm:w-[48vw] shrink-0 snap-center md:w-auto md:shrink"
-            >
-              <CollectionCard
-                title={category.title}
-                bengaliTitle={category.bengaliTitle}
-                image={category.image}
-                href={category.href}
-              />
-            </div>
+            <CollectionCard
+              key={category.id}
+              title={category.title}
+              bengaliTitle={category.bengaliTitle}
+              image={category.image}
+              href={category.href}
+            />
           ))}
         </div>
       </Container>

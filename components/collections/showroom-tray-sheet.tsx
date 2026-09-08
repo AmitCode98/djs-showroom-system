@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import {
-  Sparkle,
+  ShoppingCartSimple,
   Minus,
   Plus,
   Trash,
@@ -125,7 +125,7 @@ export function ShowroomTraySheet() {
         {items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
             <div className="w-16 h-16 rounded-none bg-[#F7EAD9] border border-[#EAD7B7] text-[#D4AF37] flex items-center justify-center mb-4 shadow-sm">
-              <Sparkle weight="light" className="w-8 h-8" />
+              <ShoppingCartSimple weight="light" className="w-8 h-8" />
             </div>
             <h3 className="font-heading text-2xl text-[#2B1D0E] mb-2 font-normal">
               Your Viewing Tray is Empty

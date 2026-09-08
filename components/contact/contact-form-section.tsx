@@ -26,7 +26,6 @@ export default function ContactFormSection() {
       <Container>
         <div className="max-w-xl mx-auto flex flex-col gap-10">
           <SectionTitle
-            subtitle="IN-STORE INQUIRY"
             title="Speak with a Specialist"
             description="Whether you wish to inspect a specific bridal piece or order a bespoke heirloom design, our concierge team is at your service."
           />

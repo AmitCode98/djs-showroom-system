@@ -21,12 +21,12 @@ export function BudgetCard({ title, description, bengaliBadge, image, href, clas
     <Link 
       href={href} 
       className={cn(
-        "group flex flex-col items-center gap-4 cursor-pointer p-3.5 rounded-none border border-[#785A28]/12 bg-card",
-        "transition-all duration-250 ease-out hover:translate-y-[-3px] active:scale-[0.98] shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(120,90,40,0.06)] hover:border-[#785A28]/25",
+        "group flex flex-col items-center cursor-pointer rounded-none border border-[#785A28]/15 bg-card overflow-hidden",
+        "transition-all duration-250 ease-out hover:translate-y-[-3px] active:scale-[0.98] shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(120,90,40,0.06)] hover:border-[#785A28]/30",
         className
       )}
     >
-      {/* Image Container with precise aspect ratio and crisp framing */}
+      {/* Image Container with flush edge-to-edge framing */}
       <div className="relative w-full aspect-4/3 rounded-none overflow-hidden bg-[#F8F5F0]">
         <CategoryImage
           src={image || null}
@@ -50,7 +50,7 @@ export function BudgetCard({ title, description, bengaliBadge, image, href, clas
       </div>
 
       {/* Typography with premium spacing */}
-      <div className="flex flex-col items-center text-center gap-1.5 relative w-full px-2 pb-2">
+      <div className="flex flex-col items-center text-center gap-1.5 relative w-full p-4 pb-5">
         <h3 className="font-body text-[16px] md:text-[17px] font-medium tracking-wide text-[#2B1D0E] transition-colors duration-250 ease-out group-hover:text-[#7A1C1C]">
           {title}
         </h3>

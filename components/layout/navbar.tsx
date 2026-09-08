@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { List, X, Sparkle, MagnifyingGlass, CaretDown, ArrowRight } from "@phosphor-icons/react"
+import { List, X, ShoppingCartSimple, MagnifyingGlass, CaretDown, ArrowRight } from "@phosphor-icons/react"
 
 import { cn } from "@/lib/utils"
 import { Container } from "@/components/ui/container"
@@ -270,7 +270,7 @@ export function Navbar() {
             )}
             aria-label={`Showroom Viewing Tray with ${totalItemsCount} pieces`}
           >
-            <Sparkle weight="light" className="w-5 h-5" />
+            <ShoppingCartSimple weight="light" className="w-5 h-5" />
             {totalItemsCount > 0 && (
               <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-[#D4AF37] text-[#2B1D0E] text-[10px] font-bold font-body rounded-none flex items-center justify-center shadow-xs">
                 {totalItemsCount}
@@ -298,7 +298,7 @@ export function Navbar() {
             )}
             aria-label={`Showroom Viewing Tray with ${totalItemsCount} pieces`}
           >
-            <Sparkle weight="light" className="w-5 h-5" />
+            <ShoppingCartSimple weight="light" className="w-5 h-5" />
             {totalItemsCount > 0 && (
               <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-[#D4AF37] text-[#2B1D0E] text-[10px] font-bold font-body rounded-none flex items-center justify-center shadow-xs">
                 {totalItemsCount}

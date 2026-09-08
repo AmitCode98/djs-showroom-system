@@ -11,8 +11,7 @@ export function NewArrivalsSection() {
       <Container>
         <SectionTitle
           title="New Arrivals"
-          subtitle="New Season Essentials"
-          description="Discover the latest handcrafted jewellery pieces curated for timeless elegance."
+          description="Freshly crafted designs just arrived from our master Bengal artisans, blending timeless tradition with modern luxury."
           align="center"
         />
 

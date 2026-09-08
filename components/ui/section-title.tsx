@@ -1,6 +1,5 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Sparkle } from "@phosphor-icons/react/dist/ssr"
 import { cn } from "@/lib/utils"
 
 const sectionTitleVariants = cva("flex flex-col max-w-2xl mx-auto", {
@@ -54,13 +53,7 @@ const SectionTitle = React.forwardRef<HTMLDivElement, SectionTitleProps>(
         )}
         {...props}
       >
-        {/* Luxury Architectural Badge */}
-        {subtitle && (
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-[#F3EAD3]/50 border border-[#EAD7B7] text-[11px] font-body uppercase tracking-[0.2em] text-[#7A1C1C] mb-4">
-            <Sparkle weight="light" className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span>{subtitle}</span>
-          </div>
-        )}
+
 
         {/* Heading in Fraunces font-light text-[#2B1D0E] */}
         <HeadingTag className="font-heading text-3xl sm:text-4xl md:text-5xl font-light text-[#2B1D0E] tracking-tight mb-3 leading-tight">

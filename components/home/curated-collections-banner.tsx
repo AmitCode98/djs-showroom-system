@@ -59,9 +59,8 @@ export function CuratedCollectionsBanner() {
       <Container>
         {/* Section Header Matching Unified Luxury Styling */}
         <SectionTitle
-          subtitle="Curated Showroom Editions"
           title="Elegance For Every Generation"
-          description="Discover bespoke gold craftsmanship curated for the distinguished gentleman and cherished little blessings."
+          description="Dedicated handcrafted gold collections designed for men's royal heritage and children's auspicious blessings."
           align="center"
         />
 

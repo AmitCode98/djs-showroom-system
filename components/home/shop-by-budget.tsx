@@ -10,8 +10,7 @@ export function ShopByBudgetSection() {
       <Container>
         <SectionTitle
           title="Shop By Budget"
-          subtitle="Curated Price Tiers"
-          description="Explore elegant jewellery collections tailored to your preferred budget range."
+          description="Find exquisite gold jewellery tailored to your investment preference — from thoughtful daily wear to grand heirloom sets."
           align="center"
         />
         

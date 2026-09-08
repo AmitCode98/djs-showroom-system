@@ -44,7 +44,6 @@ export default function ShowroomInfo() {
     <section className="py-16 md:py-24 bg-[#FBF9F5]">
       <Container>
         <SectionTitle
-          subtitle="FIND OUR SHOWROOM"
           title="Visit Us in Panagarh"
           description="Experience the artistry of Bengal goldsmiths in a serene, private environment. Our jewellery specialists are here to guide your bridal and heirloom selections."
         />

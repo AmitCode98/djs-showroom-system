@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { Sparkle, CheckCircle, Clock, DeviceTablet, ArrowRight } from "@phosphor-icons/react"
+import { CheckCircle, Clock, DeviceTablet, ArrowRight } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
 
 export interface RequestSuccessData {

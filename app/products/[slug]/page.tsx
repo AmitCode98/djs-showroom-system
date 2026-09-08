@@ -4,7 +4,7 @@ import * as React from "react"
 import { ProductImage } from "@/components/shared/product-image"
 import Link from "next/link"
 import { notFound, useRouter } from "next/navigation"
-import { ArrowLeft, Heart, Sparkle, Plus, Minus, Check } from "@phosphor-icons/react"
+import { ArrowLeft, Heart, ShoppingCartSimple, Plus, Minus, Check } from "@phosphor-icons/react"
 import { BackButton } from "@/components/ui/back-button"
 import { PRODUCTS, NEW_ARRIVALS, FEATURED_PRODUCTS } from "@/constants/products"
 import { cn } from "@/lib/utils"
@@ -211,7 +211,7 @@ export default function ProductPage({
                     </>
                   ) : (
                     <>
-                      <Sparkle weight="light" className="w-5 h-5 text-[#D4AF37]" /> Add to Viewing Tray
+                      <ShoppingCartSimple weight="light" className="w-5 h-5 text-[#D4AF37]" /> Add to Viewing Tray
                     </>
                   )}
                 </button>

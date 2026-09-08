@@ -27,10 +27,9 @@ export default function BestsellersPage() {
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-white/10 border border-white/20 text-[11px] font-body uppercase tracking-[0.2em] text-[#D4AF37] mb-3">
-                <Sparkle weight="light" className="w-3.5 h-3.5 text-[#D4AF37]" />
-                <span>সর্বাধিক জনপ্রিয় গহনা</span>
-              </div>
+              <p className="font-bengali text-sm md:text-base text-[#D4AF37] tracking-wider mb-2 font-medium">
+                সর্বাধিক জনপ্রিয় গহনা
+              </p>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl tracking-tight font-light text-white mb-3">
                 Showroom Bestsellers
               </h1>

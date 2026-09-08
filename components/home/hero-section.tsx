@@ -1,7 +1,7 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Sparkle } from "@phosphor-icons/react/dist/ssr"
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr"
 import { Container } from "@/components/ui/container"
 import Button from "@/components/ui/button"
 
@@ -28,16 +28,11 @@ export function HeroSection() {
       <div className="relative z-20 w-full pb-16 pt-36 md:pb-24 lg:pb-28">
         <Container>
           <div className="max-w-3xl flex flex-col gap-6 text-[#FDFAF5]">
-            {/* Bengali Heritage Accent & Collection Badge */}
-            <div className="flex flex-wrap items-center gap-3">
+            {/* Bengali Heritage Accent */}
+            <div className="flex items-center">
               <span className="font-bengali text-sm md:text-base text-[#D4AF37] tracking-wider font-medium">
                 ঐতিহ্যবাহী সোনার গহনা • ১৯২০ সাল থেকে বিশ্বস্ত
               </span>
-              <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#D4AF37]/60" />
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#D4AF37] text-[11px] uppercase tracking-[0.2em] font-semibold">
-                <Sparkle weight="light" className="w-3.5 h-3.5" />
-                <span>Showroom Masterpieces</span>
-              </div>
             </div>
 
             {/* Primary Heading in Luxury Serif */}

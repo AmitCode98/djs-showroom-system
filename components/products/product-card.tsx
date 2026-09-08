@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { ProductImage } from "@/components/shared/product-image"
-import { ArrowRight, Heart, Sparkle, Check } from "@phosphor-icons/react"
+import { ArrowRight, Heart, ShoppingCartSimple, Check } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
 import { useShowroomTray } from "@/context/showroom-tray-context"
 
@@ -57,14 +57,14 @@ export default function ProductCard({
   }
 
   return (
-    <div className={cn("group relative w-full p-3.5 rounded-none border border-[#785A28]/12 bg-white/40 transition-all duration-200 ease-out hover:translate-y-[-3px] shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(120,90,40,0.06)] hover:border-[#785A28]/25", className)}>
+    <div className={cn("group relative w-full rounded-none border border-[#785A28]/15 bg-white/50 overflow-hidden transition-all duration-200 ease-out hover:translate-y-[-3px] shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(120,90,40,0.06)] hover:border-[#785A28]/30", className)}>
       {/* ─── Floating Actions Stack (48px touch targets) ─── */}
-      <div className="absolute top-5 right-5 z-20 flex flex-col gap-2.5">
+      <div className="absolute top-3 right-3 z-20 flex flex-col gap-2">
         <button
           type="button"
           className={cn(
-            "w-11 h-11 rounded-none flex items-center justify-center",
-            "bg-[#FDFAF5] border border-[#D4AF37]/40 text-[#3B2416]",
+            "w-10 h-10 rounded-none flex items-center justify-center",
+            "bg-[#FDFAF5]/90 backdrop-blur-md border border-[#D4AF37]/40 text-[#3B2416]",
             "shadow-[0_4px_12px_rgba(0,0,0,0.08)]",
             "transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96]"
           )}
@@ -78,7 +78,7 @@ export default function ProductCard({
           <Heart
             weight={isWishlisted ? "fill" : "light"}
             className={cn(
-              "w-5 h-5 transition-all duration-200",
+              "w-4.5 h-4.5 transition-all duration-200",
               isWishlisted ? "text-[#7A1C1C]" : "text-[#3B2416]"
             )}
           />
@@ -87,19 +87,19 @@ export default function ProductCard({
         <button
           type="button"
           className={cn(
-            "w-11 h-11 rounded-none flex items-center justify-center",
+            "w-10 h-10 rounded-none flex items-center justify-center",
             inTray
               ? "bg-[#7A1C1C] border-[#7A1C1C] text-white shadow-[0_4px_14px_rgba(122,28,28,0.3)]"
-              : "bg-[#F3EAD3] border border-[#D4AF37]/60 text-[#3B2416] shadow-[0_6px_16px_rgba(0,0,0,0.12)]",
+              : "bg-[#F3EAD3]/90 backdrop-blur-md border border-[#D4AF37]/60 text-[#3B2416] shadow-[0_6px_16px_rgba(0,0,0,0.12)] hover:bg-[#EAD7B7]",
             "transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96]"
           )}
           aria-label={inTray ? "In Viewing Tray" : "Add to Viewing Tray"}
           onClick={handleAddToTray}
         >
           {inTray ? (
-            <Check weight="light" className="w-5 h-5 text-white" />
+            <Check weight="light" className="w-4.5 h-4.5 text-white" />
           ) : (
-            <Sparkle weight="light" className="w-5 h-5 text-[#D4AF37]" />
+            <ShoppingCartSimple weight="light" className="w-4.5 h-4.5 text-[#3B2416]" />
           )}
         </button>
       </div>
@@ -107,7 +107,7 @@ export default function ProductCard({
       {/* ─── Main Clickable Area ─── */}
       <Link
         href={href}
-        className="flex flex-col gap-4 w-full h-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-none"
+        className="flex flex-col w-full h-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-none"
         aria-label={`View details for ${title}`}
         onClick={() => {
           if (typeof window !== "undefined") {
@@ -115,12 +115,10 @@ export default function ProductCard({
           }
         }}
       >
-        {/* Image Container */}
+        {/* Image Container — Edge-to-Edge Flush */}
         <div
           className={cn(
-            "relative w-full aspect-4/5 rounded-none overflow-hidden bg-[#F8F5F0]",
-            "border border-black/4 shadow-[0_4px_15px_-5px_rgba(0,0,0,0.04)]",
-            "transition-shadow duration-200 ease-out group-hover:shadow-[0_10px_28px_-8px_rgba(0,0,0,0.09)]"
+            "relative w-full aspect-4/5 rounded-none overflow-hidden bg-[#F8F5F0]"
           )}
         >
           <ProductImage
@@ -141,8 +139,8 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* Product Information */}
-        <div className="flex flex-col gap-2 px-1.5 pb-1 grow">
+        {/* Product Information — Balanced Inset Padding */}
+        <div className="flex flex-col gap-2 p-4 pt-3.5 pb-4.5 grow bg-white/25">
           <div className="flex flex-col gap-1">
             <span className="font-body text-[10px] uppercase tracking-[0.18em] text-foreground/45 font-semibold">
               {category}

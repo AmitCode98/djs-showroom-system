@@ -11,9 +11,8 @@ export default function FeaturedProducts() {
     <section className="pt-16 pb-14 bg-background">
       <Container>
         <SectionTitle
-          subtitle="Handpicked For You"
           title="Featured Pieces"
-          description="A curated selection of our most coveted jewellery, crafted to perfection."
+          description="Handcrafted heirloom designs and showroom favourites, inspected for pure 22k hallmark excellence."
           align="center"
         />
 
