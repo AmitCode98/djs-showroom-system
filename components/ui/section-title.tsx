@@ -1,14 +1,13 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Heading, Paragraph, Caption } from "@/components/ui/typography"
 import { cn } from "@/lib/utils"
 
-const sectionTitleVariants = cva("flex flex-col gap-4", {
+const sectionTitleVariants = cva("flex flex-col max-w-2xl mx-auto", {
   variants: {
     align: {
       left: "text-left items-start",
-      center: "text-center items-center mx-auto",
-      right: "text-right items-end ml-auto",
+      center: "text-center items-center",
+      right: "text-right items-end",
     },
   },
   defaultVariants: {
@@ -21,7 +20,7 @@ export interface SectionTitleProps
     VariantProps<typeof sectionTitleVariants> {
   /** Primary heading of the section */
   title: React.ReactNode
-  /** Smaller uppercase text appearing above the title */
+  /** Smaller uppercase text appearing above the title inside a pill badge */
   subtitle?: React.ReactNode
   /** Descriptive body text appearing below the title */
   description?: React.ReactNode
@@ -33,7 +32,7 @@ const SectionTitle = React.forwardRef<HTMLDivElement, SectionTitleProps>(
   (
     {
       className,
-      align,
+      align = "center",
       title,
       subtitle,
       description,
@@ -42,26 +41,30 @@ const SectionTitle = React.forwardRef<HTMLDivElement, SectionTitleProps>(
     },
     ref
   ) => {
+    const HeadingTag = `h${titleLevel}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+
     return (
       <div
         ref={ref}
-        className={cn(sectionTitleVariants({ align }), className)}
+        className={cn(
+          sectionTitleVariants({ align }),
+          "mb-12 md:mb-16",
+          className
+        )}
         {...props}
       >
-        {subtitle && (
-          <Caption className="text-gold tracking-widest font-medium">
-            {subtitle}
-          </Caption>
-        )}
-        
-        <Heading level={titleLevel} className="max-w-3xl">
-          {title}
-        </Heading>
 
+
+        {/* Heading in Fraunces font-light text-[#2B1D0E] */}
+        <HeadingTag className="font-heading text-3xl sm:text-4xl md:text-5xl font-light text-[#2B1D0E] tracking-tight mb-3 leading-tight">
+          {title}
+        </HeadingTag>
+
+        {/* Description in Albert Sans text-[#7B6A58] */}
         {description && (
-          <Paragraph className="max-w-2xl text-muted-foreground mt-2">
+          <p className="font-body text-sm sm:text-base text-[#7B6A58] leading-relaxed max-w-xl mx-auto">
             {description}
-          </Paragraph>
+          </p>
         )}
       </div>
     )

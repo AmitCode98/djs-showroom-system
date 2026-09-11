@@ -1,19 +1,21 @@
 import React from "react"
 import { Container } from "@/components/ui/container"
-import { Heading, Paragraph, Caption } from "@/components/ui/typography"
+import { BackButton } from "@/components/ui/back-button"
 
 export default function AboutHero() {
   return (
-    <section className="py-24 bg-foreground text-background">
+    <section className="pt-12 pb-24 bg-foreground text-background">
       <Container>
-        <div className="max-w-3xl mx-auto text-center flex flex-col gap-6">
-          <Caption className="text-gold tracking-widest">Who We Are</Caption>
-          <Heading level={1} className="text-background leading-tight">
+        <div className="mb-8">
+          <BackButton label="Back to Showroom" fallbackHref="/" variant="dark" />
+        </div>
+        <div className="max-w-3xl mx-auto text-center flex flex-col items-center gap-4">
+          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-light text-white tracking-tight leading-tight">
             A Legacy Forged in Gold
-          </Heading>
-          <Paragraph className="text-background/70 text-lg">
+          </h1>
+          <p className="font-body text-sm sm:text-base text-white/80 max-w-xl leading-relaxed font-light">
             For over a century, DJS Showroom has stood as a beacon of luxury craftsmanship — blending tradition with modern artistry to create jewellery that transcends time.
-          </Paragraph>
+          </p>
         </div>
       </Container>
     </section>

@@ -1,25 +1,31 @@
 // ============================================================
-// TYPES — BARREL EXPORT
-// Import all types from a single entry point:
-//   import type { Product, ApiResponse } from "@/types"
+// ADMIN TYPES — Barrel export
 // ============================================================
 
 export type {
-  // Product
+  PurchaseRequest,
+  RequestStatus,
+  RequestedProduct,
+  AdminNavItem,
+  DashboardStat,
+  AnnouncementLang,
+  AnnouncementItem,
+  ShowroomSettings,
+  HomeSection,
+  HomepageCuration,
+} from "./admin"
+
+export type {
   Product,
   ProductSummary,
   ProductImage,
-  ProductStatus,
-} from "./product.types"
-
-export type {
-  // Category
+  ProductImages,
   Category,
   CategorySummary,
-} from "./category.types"
+  BudgetRange,
+} from "./product"
 
 export type {
-  // User
   User,
   UserSummary,
   UserAddress,
@@ -27,17 +33,18 @@ export type {
 } from "./user.types"
 
 export type {
-  // API
   ApiResponse,
   ApiError,
-  // Pagination
   PaginationMeta,
   PaginatedResponse,
-  // Sort
   SortOrder,
   SortOption,
-  // Utilities
   RequireFields,
   DeepPartial,
   SelectOption,
 } from "./common.types"
+
+export type {
+  TrayItem,
+  ShowroomTrayContextType,
+} from "./tray"

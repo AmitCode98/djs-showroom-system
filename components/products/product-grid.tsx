@@ -18,7 +18,6 @@ export default function ProductGrid() {
     <section className="py-20 bg-background">
       <Container>
         <SectionTitle
-          subtitle="The Collection"
           title="All Pieces"
           description="Browse our full range of handcrafted jewellery, each piece a work of art."
         />
@@ -28,7 +27,7 @@ export default function ProductGrid() {
             <ProductCard
               key={product.id}
               title={product.title}
-              collection={product.collection}
+              category={product.collection}
               price={product.price}
             />
           ))}

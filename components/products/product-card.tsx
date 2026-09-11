@@ -1,60 +1,183 @@
-import Image from "next/image"
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
-import Button from "@/components/ui/button"
+"use client"
+
+import * as React from "react"
+import Link from "next/link"
+import { ProductImage } from "@/components/shared/product-image"
+import { ArrowRight, Heart, ShoppingCartSimple, Check, X } from "@phosphor-icons/react"
+import { cn } from "@/lib/utils"
+import { useShowroomTray } from "@/context/showroom-tray-context"
+
+import { getBengaliCategoryBadge } from "@/constants/bengali-badges"
 
 export interface ProductCardProps {
+  id?: string
+  slug?: string
   title: string
-  collection: string
-  price: number
-  imageSrc?: string
+  category: string
+  bengaliBadge?: string
+  price: string | number
+  image?: string
+  href?: string
+  className?: string
 }
 
 export default function ProductCard({
+  id,
+  slug,
   title,
-  collection,
+  category,
+  bengaliBadge,
   price,
-  imageSrc,
+  image,
+  href = "#",
+  className,
 }: ProductCardProps) {
+  const displayBengali = bengaliBadge || getBengaliCategoryBadge(category)
+  const { addItem, removeItem, isInTray } = useShowroomTray()
+  const [isWishlisted, setIsWishlisted] = React.useState(false)
+
+  const productId = id || slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+  const productSlug = slug || href.replace("/products/", "") || productId
+  const inTray = isInTray(productId)
+
+  const formattedPrice =
+    typeof price === "number" ? `₹${price.toLocaleString("en-IN")}` : price
+
+  const handleToggleTray = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (inTray) {
+      // Toggle removal from card with Undo toast
+      removeItem(productId)
+    } else {
+      // Add to tray
+      addItem({
+        id: productId,
+        slug: productSlug,
+        name: title,
+        category,
+        price,
+        image,
+      })
+    }
+  }
+
   return (
-    <Card className="group hover:border-ring cursor-pointer">
-      {/* Product Image */}
-      <div className="relative aspect-square w-full bg-secondary overflow-hidden">
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+    <div className={cn("group relative w-full rounded-none border border-[#785A28]/15 bg-white/50 overflow-hidden transition-all duration-200 ease-out hover:translate-y-[-3px] shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_20px_rgba(120,90,40,0.06)] hover:border-[#785A28]/30", className)}>
+      {/* ─── Floating Actions Stack (48px touch targets) ─── */}
+      <div className="absolute top-3 right-3 z-20 flex flex-col gap-2">
+        <button
+          type="button"
+          className={cn(
+            "w-10 h-10 rounded-none flex items-center justify-center",
+            "bg-[#FDFAF5]/90 backdrop-blur-md border border-[#D4AF37]/40 text-[#3B2416]",
+            "shadow-[0_4px_12px_rgba(0,0,0,0.08)]",
+            "transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96]"
+          )}
+          aria-label={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setIsWishlisted((prev) => !prev)
+          }}
+        >
+          <Heart
+            weight={isWishlisted ? "fill" : "light"}
+            className={cn(
+              "w-4.5 h-4.5 transition-all duration-200",
+              isWishlisted ? "text-[#7A1C1C]" : "text-[#3B2416]"
+            )}
           />
-        ) : (
-          <div className="w-full h-full bg-secondary" />
-        )}
+        </button>
+
+        {/* Viewing Tray Toggle Button */}
+        <button
+          type="button"
+          className={cn(
+            "w-10 h-10 rounded-none flex items-center justify-center group/tray-btn relative",
+            inTray
+              ? "bg-[#7A1C1C] border-[#7A1C1C] text-white shadow-[0_4px_14px_rgba(122,28,28,0.3)] hover:bg-[#621616]"
+              : "bg-[#F3EAD3]/90 backdrop-blur-md border border-[#D4AF37]/60 text-[#3B2416] shadow-[0_6px_16px_rgba(0,0,0,0.12)] hover:bg-[#EAD7B7]",
+            "transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96]"
+          )}
+          aria-label={inTray ? `Remove ${title} from Viewing Tray` : `Add ${title} to Viewing Tray`}
+          title={inTray ? "In Viewing Tray · Click to remove" : "Add to Viewing Tray"}
+          onClick={handleToggleTray}
+        >
+          {inTray ? (
+            <>
+              {/* Checkmark in resting state; shifts to X on hover to show toggle removal */}
+              <Check weight="bold" className="w-4.5 h-4.5 text-white group-hover/tray-btn:hidden transition-transform" />
+              <X weight="bold" className="w-4.5 h-4.5 text-white hidden group-hover/tray-btn:block transition-transform" />
+            </>
+          ) : (
+            <ShoppingCartSimple weight="light" className="w-4.5 h-4.5 text-[#3B2416]" />
+          )}
+        </button>
       </div>
 
-      <CardHeader className="pb-1">
-        <p className="font-body text-xs text-muted-foreground uppercase tracking-widest">
-          {collection}
-        </p>
-        <h3 className="font-heading text-xl font-semibold text-foreground">
-          {title}
-        </h3>
-      </CardHeader>
-
-      <CardContent>
-        <p className="font-heading text-lg font-medium text-foreground">
-          ₹{price.toLocaleString("en-IN")}
-        </p>
-      </CardContent>
-
-      <CardFooter>
-        <Button
-          variant="outline"
-          className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary"
+      {/* ─── Main Clickable Area ─── */}
+      <Link
+        href={href}
+        className="flex flex-col w-full h-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-none"
+        aria-label={`View details for ${title}`}
+        onClick={() => {
+          if (typeof window !== "undefined") {
+            sessionStorage.setItem("showroom_scroll_pos", window.scrollY.toString())
+          }
+        }}
+      >
+        {/* Image Container — Edge-to-Edge Flush */}
+        <div
+          className={cn(
+            "relative w-full aspect-4/5 rounded-none overflow-hidden bg-[#F8F5F0]"
+          )}
         >
-          View Details
-        </Button>
-      </CardFooter>
-    </Card>
+          <ProductImage
+            src={image || null}
+            alt={`DJS ${title}`}
+            aspectRatio="productCard"
+            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 25vw"
+            className="group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-none"
+          />
+
+          {/* Floating Bengali Badge */}
+          {displayBengali && (
+            <div className="absolute top-3 left-3 z-10 pointer-events-none">
+              <span className="px-2.5 py-0.5 rounded-none bg-[#7A1C1C]/90 backdrop-blur-md text-[11px] font-bengali text-white/95 shadow-xs tracking-wide">
+                {displayBengali}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Product Information — Balanced Inset Padding */}
+        <div className="flex flex-col gap-2 p-4 pt-3.5 pb-4.5 grow bg-white/25">
+          <div className="flex flex-col gap-1">
+            <span className="font-body text-[10px] uppercase tracking-[0.18em] text-foreground/45 font-semibold">
+              {category}
+            </span>
+            <h3 className="font-heading text-[18px] lg:text-[20px] font-normal tracking-[0.03em] text-[#2B1D0E] leading-snug line-clamp-1 transition-colors duration-200 ease-out group-hover:text-[#7A1C1C]">
+              {title}
+            </h3>
+          </div>
+
+          <div className="flex flex-col gap-3 mt-auto">
+            <span className="font-body text-[15px] font-semibold tracking-wide text-foreground/90">
+              {formattedPrice}
+            </span>
+
+            <span className="inline-flex items-center gap-1.5 font-body text-[10px] uppercase tracking-widest text-[#7A1C1C] font-semibold w-fit">
+              <span className="relative">
+                View Details
+                <span className="absolute left-0 -bottom-0.5 w-0 h-px bg-[#7A1C1C] transition-all duration-200 ease-out group-hover:w-full" />
+              </span>
+              <ArrowRight weight="light" className="w-3.5 h-3.5 text-[#D4AF37] transition-transform duration-200 ease-out group-hover:translate-x-1" />
+            </span>
+          </div>
+        </div>
+      </Link>
+    </div>
   )
 }

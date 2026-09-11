@@ -60,8 +60,9 @@
      FONTS
   ========================== */
 
-  --font-heading: var(--font-cormorant);
-  --font-body: var(--font-inter);
+  --font-heading: var(--font-fraunces), serif;
+  --font-body: var(--font-albert-sans), sans-serif;
+  --font-bengali: var(--font-hind-siliguri), sans-serif;
 
   /* =========================
      COLORS
@@ -127,7 +128,6 @@
   html {
     width: 100%;
     min-height: 100%;
-    scroll-behavior: smooth;
     font-family: var(--font-body);
   }
 
@@ -191,6 +191,18 @@
 ========================================================= */
 
 @layer utilities {
+  .font-heading {
+    font-family: var(--font-fraunces), Georgia, serif !important;
+  }
+
+  .font-body {
+    font-family: var(--font-albert-sans), system-ui, -apple-system, sans-serif !important;
+  }
+
+  .font-bengali {
+    font-family: var(--font-hind-siliguri), sans-serif !important;
+  }
+
   .container-wrapper {
     width: 100%;
     max-width: 1440px;
@@ -228,7 +240,7 @@
 
 @layer utilities {
   .animate-marquee {
-    animation: marquee 12s linear infinite;
+    animation: marquee 25s linear infinite;
     will-change: transform;
     backface-visibility: hidden;
     perspective: 1000px;
@@ -238,3 +250,178 @@
     animation-play-state: paused;
   }
 }
+
+/* =========================================================
+   DJS LUXURY SONNER TOAST STYLING
+========================================================= */
+
+[data-sonner-toaster] {
+  font-family: var(--font-body);
+}
+
+[data-sonner-toast].djs-toast {
+  background-color: #fffdf9 !important;
+  color: #2b1d0e !important;
+  border: 1px solid #ead7b7 !important;
+  border-left: 3px solid #7a1c1c !important;
+  border-radius: 0px !important;
+  box-shadow: 0 16px 36px -6px rgba(43, 29, 14, 0.16), 0 4px 12px -2px rgba(43, 29, 14, 0.08), 0 0 0 1px rgba(212, 175, 55, 0.2) !important;
+  padding: 12px 16px !important;
+  gap: 12px !important;
+  width: auto !important;
+  min-width: 320px !important;
+  max-width: 480px !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Variant Accents */
+[data-sonner-toast].djs-toast[data-type="success"] {
+  border-left-color: #7a1c1c !important;
+  background-color: #fffdf9 !important;
+}
+
+[data-sonner-toast].djs-toast[data-type="error"] {
+  border-left-color: #7a1c1c !important;
+}
+
+[data-sonner-toast].djs-toast[data-type="info"] {
+  border-left-color: #d4af37 !important;
+}
+
+[data-sonner-toast].djs-toast[data-type="warning"] {
+  border-left-color: #c59b27 !important;
+}
+
+/* Content Container */
+[data-sonner-toast] [data-content] {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+}
+
+/* Title & Typography */
+[data-sonner-toast] .djs-toast-title,
+[data-sonner-toast] [data-title] {
+  font-family: var(--font-fraunces), Georgia, serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #2b1d0e !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.35 !important;
+}
+
+/* Description */
+[data-sonner-toast] .djs-toast-description,
+[data-sonner-toast] [data-description] {
+  font-family: var(--font-albert-sans), sans-serif !important;
+  font-size: 12px !important;
+  color: #7b6a58 !important;
+  line-height: 1.45 !important;
+  margin-top: 2px !important;
+}
+
+/* Icon alignment */
+[data-sonner-toast] [data-icon] {
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+/* Action Button */
+[data-sonner-toast] .djs-toast-action,
+[data-sonner-toast] [data-button] {
+  background-color: #7a1c1c !important;
+  color: #ffffff !important;
+  border: 1px solid #7a1c1c !important;
+  border-radius: 0px !important;
+  font-family: var(--font-albert-sans), sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  padding: 8px 14px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+  margin-left: 8px !important;
+  transition: all 0.15s ease !important;
+  box-shadow: 0 2px 6px rgba(122, 28, 28, 0.25) !important;
+  cursor: pointer !important;
+}
+
+[data-sonner-toast] .djs-toast-action:hover,
+[data-sonner-toast] [data-button]:hover {
+  background-color: #621616 !important;
+  border-color: #621616 !important;
+  transform: scale(0.98);
+}
+
+/* Cancel Button */
+[data-sonner-toast] .djs-toast-cancel,
+[data-sonner-toast] [data-cancel-button] {
+  background-color: transparent !important;
+  color: #7b6a58 !important;
+  border: 1px solid #ead7b7 !important;
+  border-radius: 0px !important;
+  font-family: var(--font-albert-sans), sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 6px 12px !important;
+  white-space: nowrap !important;
+}
+
+/* Close Button (Fixed & Positioned Inside) */
+[data-sonner-toast] .djs-toast-close,
+[data-sonner-toast] [data-close-button] {
+  position: absolute !important;
+  left: auto !important;
+  right: 6px !important;
+  top: 6px !important;
+  transform: none !important;
+  background-color: #fffdf9 !important;
+  border: 1px solid #ead7b7 !important;
+  color: #7b6a58 !important;
+  border-radius: 0px !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0 !important;
+  transition: opacity 0.15s ease, background-color 0.15s ease !important;
+  cursor: pointer !important;
+  z-index: 10 !important;
+}
+
+[data-sonner-toast]:hover .djs-toast-close,
+[data-sonner-toast]:hover [data-close-button] {
+  opacity: 0.8 !important;
+}
+
+[data-sonner-toast] .djs-toast-close:hover,
+[data-sonner-toast] [data-close-button]:hover {
+  opacity: 1 !important;
+  background-color: #f7ead9 !important;
+  color: #2b1d0e !important;
+  border-color: #d4af37 !important;
+}
+
+/* Prevent Sonner collapsed stack ghost cards from appearing as blank white rectangles */
+[data-sonner-toaster] [data-sonner-toast][data-front="false"],
+[data-sonner-toaster] [data-sonner-toast]:not([data-front="true"]):not(:first-child),
+[data-sonner-toaster] [data-sonner-toast][aria-hidden="true"] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+

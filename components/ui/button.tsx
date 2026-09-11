@@ -1,35 +1,40 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Loader2 } from "lucide-react"
-
+import { CircleNotch } from "@phosphor-icons/react/dist/ssr"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-xl font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 font-body uppercase tracking-wider",
+  "inline-flex items-center justify-center whitespace-nowrap font-body uppercase tracking-[0.16em] font-semibold select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-45 transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96] rounded-none",
   {
     variants: {
       variant: {
         primary:
-          "bg-primary text-primary-foreground hover:bg-primary/90",
+          "rounded-none bg-[#2B1D0E] text-[#FDFAF5] border border-[#2B1D0E] hover:bg-[#7A1C1C] hover:border-[#7A1C1C] shadow-[0_4px_16px_rgba(43,29,14,0.12)]",
 
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "rounded-none bg-[#F7EAD9]/90 text-[#2B1D0E] border border-[#EAD7B7] hover:bg-[#7A1C1C] hover:text-white hover:border-[#7A1C1C]",
 
         outline:
-          "border border-border bg-transparent hover:bg-accent hover:text-accent-foreground",
+          "rounded-none border border-[#2B1D0E] bg-transparent text-[#2B1D0E] hover:bg-[#7A1C1C] hover:text-white hover:border-[#7A1C1C]",
 
         ghost:
-          "hover:bg-accent hover:text-accent-foreground",
+          "rounded-none hover:bg-[#F3E2C2]/20 text-[#2B1D0E]",
 
         gold:
-          "bg-gold text-white shadow-sm shadow-gold/20 hover:brightness-110 hover:-translate-y-0.5",
+          "rounded-none bg-gradient-to-r from-[#D4AF37] via-[#DFBC46] to-[#C29D2C] text-[#2B1D0E] border border-[#E5C158]/80 shadow-[0_4px_18px_rgba(212,175,55,0.3)] hover:brightness-105",
+
+        pill:
+          "rounded-none bg-[#7A1C1C] text-white border border-[#7A1C1C] shadow-[0_4px_16px_rgba(122,28,28,0.25)] hover:bg-[#621616]",
+
+        box:
+          "rounded-none bg-[#2B1D0E] text-[#FDFAF5] border border-[#D4AF37] hover:bg-[#7A1C1C] hover:border-[#7A1C1C] tracking-[0.18em]",
       },
 
       size: {
-        sm: "h-9 px-5 text-xs",
-        md: "h-12 px-8 text-sm",
-        lg: "h-14 px-10 text-base",
+        sm: "min-h-[40px] px-5 text-[11px]",
+        md: "min-h-[48px] px-7 text-xs",
+        lg: "min-h-[54px] px-9 text-sm",
       },
     },
 
@@ -74,8 +79,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ...props,
     }
 
-    // When asChild, Slot clones the single child element and merges props into it.
-    // We must NOT wrap children in a Fragment or Slot will try to pass className to it.
     if (asChild) {
       return <Comp {...sharedProps}>{children}</Comp>
     }
@@ -83,7 +86,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp {...sharedProps}>
         {isLoading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <CircleNotch weight="light" className="h-4 w-4 animate-spin text-[#D4AF37]" />
         ) : (
           <>
             {icon && iconPlacement === "left" && (
@@ -103,4 +106,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export default Button
-export { buttonVariants }
+export { Button, buttonVariants }

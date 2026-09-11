@@ -13,12 +13,10 @@ export {
 
 export {
   CATEGORIES,
-  CATEGORY_SLUGS,
 } from "./categories"
 
 export {
   FEATURED_PRODUCTS,
-  PRODUCT_STATUS_LABELS,
 } from "./products"
 
 export {
