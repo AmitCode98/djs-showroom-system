@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { toast } from "sonner"
+import { Check, Trash } from "@phosphor-icons/react"
 import type { TrayItem, ShowroomTrayContextType } from "@/types/tray"
 
 const STORAGE_KEY_TRAY = "djs_showroom_tray"
@@ -80,15 +81,20 @@ export function ShowroomTrayProvider({ children }: { children: React.ReactNode }
           ? product.price
           : parseFloat(String(product.price).replace(/[^0-9.]/g, "")) || 0
 
+      let wasAlreadyInTray = false
+      let finalQty = quantity
+
       setItems((prevItems) => {
         const existingIndex = prevItems.findIndex((item) => item.productId === product.id)
 
         if (existingIndex > -1) {
+          wasAlreadyInTray = true
           const updated = [...prevItems]
           const current = updated[existingIndex]
+          finalQty = current.quantity + quantity
           updated[existingIndex] = {
             ...current,
-            quantity: current.quantity + quantity,
+            quantity: finalQty,
             customerNote: note.trim() || current.customerNote,
           }
           return updated
@@ -112,33 +118,91 @@ export function ShowroomTrayProvider({ children }: { children: React.ReactNode }
         return [...prevItems, newItem]
       })
 
-      toast.success(`Added "${product.name}" to Viewing Tray`, {
-        description: `Tablet: ${tabletId} · Item ready for showroom staff review`,
-      })
+      // Stable deterministic toast ID: Prevents duplicate queuing and phantom blank white cards
+      const toastId = `tray-item-${product.id}`
+      toast.success(
+        wasAlreadyInTray
+          ? `Updated "${product.name}" in Viewing Tray (${finalQty} pieces)`
+          : `Added "${product.name}" to Viewing Tray`,
+        {
+          id: toastId,
+          description: `Tablet: ${tabletId} · Item ready for showroom staff review`,
+          icon: (
+            <div className="w-6 h-6 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/45 flex items-center justify-center text-[#7A1C1C] shrink-0">
+              <Check weight="bold" className="w-3.5 h-3.5 text-[#7A1C1C]" />
+            </div>
+          ),
+          action: {
+            label: "View Tray",
+            onClick: () => setIsTrayOpen(true),
+          },
+        }
+      )
     },
-    [tabletId]
+    [tabletId, setIsTrayOpen]
   )
 
-  const removeItem = React.useCallback((productId: string) => {
-    setItems((prev) => {
-      const target = prev.find((item) => item.productId === productId)
-      if (target) {
-        toast.info(`Removed "${target.name}" from Viewing Tray`)
+  const removeItem = React.useCallback(
+    (productId: string) => {
+      let removedTarget: TrayItem | undefined
+
+      setItems((prev) => {
+        const target = prev.find((item) => item.productId === productId)
+        if (target) {
+          removedTarget = target
+        }
+        return prev.filter((item) => item.productId !== productId)
+      })
+
+      if (removedTarget) {
+        const itemToRestore = removedTarget
+        toast(`Removed "${itemToRestore.name}" from Viewing Tray`, {
+          id: `tray-item-${productId}`,
+          description: "Piece removed from in-person consultation tray",
+          icon: (
+            <div className="w-6 h-6 rounded-full bg-[#7A1C1C]/10 border border-[#7A1C1C]/35 flex items-center justify-center text-[#7A1C1C] shrink-0">
+              <Trash weight="bold" className="w-3.5 h-3.5 text-[#7A1C1C]" />
+            </div>
+          ),
+          action: {
+            label: "Undo",
+            onClick: () => {
+              addItem(
+                {
+                  id: itemToRestore.productId,
+                  slug: itemToRestore.slug,
+                  name: itemToRestore.name,
+                  category: itemToRestore.category,
+                  price: itemToRestore.price,
+                  image: itemToRestore.image,
+                  material: itemToRestore.material,
+                  purity: itemToRestore.purity,
+                  weight: itemToRestore.weight,
+                },
+                itemToRestore.quantity,
+                itemToRestore.customerNote || ""
+              )
+            },
+          },
+        })
       }
-      return prev.filter((item) => item.productId !== productId)
-    })
-  }, [])
+    },
+    [addItem]
+  )
 
-  const updateQuantity = React.useCallback((productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      setItems((prev) => prev.filter((item) => item.productId !== productId))
-      return
-    }
+  const updateQuantity = React.useCallback(
+    (productId: string, quantity: number) => {
+      if (quantity <= 0) {
+        removeItem(productId)
+        return
+      }
 
-    setItems((prev) =>
-      prev.map((item) => (item.productId === productId ? { ...item, quantity } : item))
-    )
-  }, [])
+      setItems((prev) =>
+        prev.map((item) => (item.productId === productId ? { ...item, quantity } : item))
+      )
+    },
+    [removeItem]
+  )
 
   const updateItemNote = React.useCallback((productId: string, note: string) => {
     setItems((prev) =>

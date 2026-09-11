@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { ProductImage } from "@/components/shared/product-image"
-import { ArrowRight, Heart, ShoppingCartSimple, Check } from "@phosphor-icons/react"
+import { ArrowRight, Heart, ShoppingCartSimple, Check, X } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
 import { useShowroomTray } from "@/context/showroom-tray-context"
 
@@ -33,7 +33,7 @@ export default function ProductCard({
   className,
 }: ProductCardProps) {
   const displayBengali = bengaliBadge || getBengaliCategoryBadge(category)
-  const { addItem, isInTray } = useShowroomTray()
+  const { addItem, removeItem, isInTray } = useShowroomTray()
   const [isWishlisted, setIsWishlisted] = React.useState(false)
 
   const productId = id || slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
@@ -43,17 +43,24 @@ export default function ProductCard({
   const formattedPrice =
     typeof price === "number" ? `₹${price.toLocaleString("en-IN")}` : price
 
-  const handleAddToTray = (e: React.MouseEvent) => {
+  const handleToggleTray = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    addItem({
-      id: productId,
-      slug: productSlug,
-      name: title,
-      category,
-      price,
-      image,
-    })
+
+    if (inTray) {
+      // Toggle removal from card with Undo toast
+      removeItem(productId)
+    } else {
+      // Add to tray
+      addItem({
+        id: productId,
+        slug: productSlug,
+        name: title,
+        category,
+        price,
+        image,
+      })
+    }
   }
 
   return (
@@ -84,20 +91,26 @@ export default function ProductCard({
           />
         </button>
 
+        {/* Viewing Tray Toggle Button */}
         <button
           type="button"
           className={cn(
-            "w-10 h-10 rounded-none flex items-center justify-center",
+            "w-10 h-10 rounded-none flex items-center justify-center group/tray-btn relative",
             inTray
-              ? "bg-[#7A1C1C] border-[#7A1C1C] text-white shadow-[0_4px_14px_rgba(122,28,28,0.3)]"
+              ? "bg-[#7A1C1C] border-[#7A1C1C] text-white shadow-[0_4px_14px_rgba(122,28,28,0.3)] hover:bg-[#621616]"
               : "bg-[#F3EAD3]/90 backdrop-blur-md border border-[#D4AF37]/60 text-[#3B2416] shadow-[0_6px_16px_rgba(0,0,0,0.12)] hover:bg-[#EAD7B7]",
             "transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96]"
           )}
-          aria-label={inTray ? "In Viewing Tray" : "Add to Viewing Tray"}
-          onClick={handleAddToTray}
+          aria-label={inTray ? `Remove ${title} from Viewing Tray` : `Add ${title} to Viewing Tray`}
+          title={inTray ? "In Viewing Tray · Click to remove" : "Add to Viewing Tray"}
+          onClick={handleToggleTray}
         >
           {inTray ? (
-            <Check weight="light" className="w-4.5 h-4.5 text-white" />
+            <>
+              {/* Checkmark in resting state; shifts to X on hover to show toggle removal */}
+              <Check weight="bold" className="w-4.5 h-4.5 text-white group-hover/tray-btn:hidden transition-transform" />
+              <X weight="bold" className="w-4.5 h-4.5 text-white hidden group-hover/tray-btn:block transition-transform" />
+            </>
           ) : (
             <ShoppingCartSimple weight="light" className="w-4.5 h-4.5 text-[#3B2416]" />
           )}

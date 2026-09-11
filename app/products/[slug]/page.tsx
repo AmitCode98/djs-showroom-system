@@ -4,7 +4,7 @@ import * as React from "react"
 import { ProductImage } from "@/components/shared/product-image"
 import Link from "next/link"
 import { notFound, useRouter } from "next/navigation"
-import { ArrowLeft, Heart, ShoppingCartSimple, Plus, Minus, Check } from "@phosphor-icons/react"
+import { ArrowLeft, Heart, ShoppingCartSimple, Plus, Minus, Check, Trash, ArrowRight } from "@phosphor-icons/react"
 import { BackButton } from "@/components/ui/back-button"
 import { PRODUCTS, NEW_ARRIVALS, FEATURED_PRODUCTS } from "@/constants/products"
 import { cn } from "@/lib/utils"
@@ -18,7 +18,7 @@ export default function ProductPage({
 }) {
   const resolvedParams = React.use(params)
   const slug = resolvedParams.slug
-  const { addItem, isInTray, setIsTrayOpen } = useShowroomTray()
+  const { addItem, removeItem, isInTray, setIsTrayOpen } = useShowroomTray()
 
   const product = PRODUCTS.find((p) => p.slug === slug)
 
@@ -197,17 +197,17 @@ export default function ProductPage({
               <div className="flex gap-4">
                 <button
                   type="button"
-                  onClick={handleAddToTray}
+                  onClick={inTray ? () => setIsTrayOpen(true) : handleAddToTray}
                   className={cn(
                     "flex-1 min-h-[54px] flex items-center justify-center gap-3 px-6 rounded-none font-body tracking-[0.16em] uppercase text-sm font-semibold transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96]",
                     inTray 
-                      ? "bg-[#7A1C1C] text-white shadow-[0_4px_16px_rgba(122,28,28,0.25)] border border-[#7A1C1C]"
+                      ? "bg-[#7A1C1C] text-white shadow-[0_4px_16px_rgba(122,28,28,0.25)] border border-[#7A1C1C] hover:bg-[#621616]"
                       : "bg-[#2B1D0E] text-white hover:bg-[#7A1C1C] hover:border-[#7A1C1C] border border-[#2B1D0E] shadow-[0_4px_14px_rgba(43,29,14,0.15)]"
                   )}
                 >
                   {inTray ? (
                     <>
-                      <Check weight="light" className="w-5 h-5 text-[#D4AF37]" /> In Viewing Tray
+                      <Check weight="bold" className="w-5 h-5 text-[#D4AF37]" /> In Viewing Tray · Open Tray
                     </>
                   ) : (
                     <>
@@ -231,13 +231,34 @@ export default function ProductPage({
                 </button>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsTrayOpen(true)}
-                className="w-full min-h-[50px] flex items-center justify-center gap-2 py-3 rounded-none border border-[#2B1D0E] text-[#2B1D0E] font-body font-semibold tracking-[0.16em] uppercase text-xs hover:bg-[#7A1C1C] hover:text-white hover:border-[#7A1C1C] transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96] shadow-2xs"
-              >
-                Open Viewing Tray
-              </button>
+              {inTray ? (
+                <div className="flex items-center justify-between pt-1 px-1">
+                  <button
+                    type="button"
+                    onClick={() => removeItem(product.id)}
+                    className="inline-flex items-center gap-1.5 text-xs font-body text-[#7B6A58] hover:text-red-700 transition-colors py-1 cursor-pointer"
+                  >
+                    <Trash weight="light" className="w-4 h-4 text-red-600/80" />
+                    <span>Remove from Viewing Tray</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsTrayOpen(true)}
+                    className="inline-flex items-center gap-1 text-xs font-body font-semibold text-[#7A1C1C] hover:underline cursor-pointer"
+                  >
+                    <span>Inspect In Tray</span>
+                    <ArrowRight weight="light" className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setIsTrayOpen(true)}
+                  className="w-full min-h-[50px] flex items-center justify-center gap-2 py-3 rounded-none border border-[#2B1D0E] text-[#2B1D0E] font-body font-semibold tracking-[0.16em] uppercase text-xs hover:bg-[#7A1C1C] hover:text-white hover:border-[#7A1C1C] transition-all duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.96] shadow-2xs"
+                >
+                  Open Viewing Tray
+                </button>
+              )}
             </div>
 
 

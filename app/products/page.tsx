@@ -124,7 +124,7 @@ function CatalogueContent() {
       </div>
 
       {/* ─── Touch-First Filter Section (Min 48px Touch Targets) ─── */}
-      <section className="sticky top-20 z-30 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-[#D4AF37]/20 py-4 shadow-xs">
+      <section className="relative z-10 bg-[#FBF9F5] border-b border-[#D4AF37]/20 py-5">
         <Container className="flex flex-col gap-4">
           
           {/* Top Bar: Search and Reset */}

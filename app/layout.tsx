@@ -49,7 +49,7 @@ export default function RootLayout({
           <ShowroomTraySheet />
           <RequestSuccessModal />
           <TabletConfigModal />
-          <Toaster position="top-center" richColors />
+          <Toaster position="top-center" />
         </ShowroomTrayProvider>
       </body>
     </html>

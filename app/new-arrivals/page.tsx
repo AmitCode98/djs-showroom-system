@@ -57,7 +57,7 @@ export default function NewArrivalsPage() {
       </div>
 
       {/* ─── Filter Bar ─── */}
-      <div className="sticky top-[69px] z-30 bg-[#FDFAF5]/95 backdrop-blur-md border-b border-[#EAD7B7]/60 py-4 shadow-2xs">
+      <div className="relative z-10 bg-[#FDFAF5] border-b border-[#EAD7B7]/60 py-4">
         <Container>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
             <button
